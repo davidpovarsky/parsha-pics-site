@@ -76,7 +76,7 @@ Cloudflare Pages settings:
 - Functions directory: repository `functions/` (outside `dist/`)
 - Production branch: `main`
 
-Use a preview deployment first. Keep the default safe build variables until legal text and email delivery are approved and tested. Do not attach or alter a custom domain without confirming the exact hostname.
+Use a preview deployment first. Keep the default safe build variables until legal text and email delivery are approved and tested. The repository's GitHub Pages workflow publishes this default safe build only as a no-index staging fallback; it does not run `/api/lead`. Do not attach or alter a custom domain without confirming the exact hostname.
 
 ## Repository structure
 
