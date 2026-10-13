@@ -21,55 +21,58 @@ npm test
 npm run dev
 ```
 
-Open <http://127.0.0.1:4173>. The lightweight local server does not send email.
-
 Useful commands:
 
 ```powershell
-npm run build         # creates a safe, no-index dist/ preview
-npm run test:browser  # QA at 360, 390, 768, 1024 and 1440px
-npm run sync-assets   # no-op when all source assets exist
+npm run build              # safe, no-index dist/ preview
+npm run test:browser       # QA at 360, 390, 768, 1024 and 1440px
+npm run preview:cloudflare # local Pages runtime, including /api/lead
+npm run sync-assets        # no-op when all source assets exist
 ```
 
-Set `BASE_URL` when the same browser QA should verify a deployed preview instead of the local `dist/` build.
-
-If a source asset is missing, set a read-only `FIGMA_TOKEN` locally and run `npm run sync-assets`. Never commit the token.
+Set `BASE_URL` when browser QA should verify a deployed preview. If a source asset is missing, set a read-only `FIGMA_TOKEN` locally and run `npm run sync-assets`. Never commit the token.
 
 ## Release gates and build output
 
-`npm test` fails unless all 41 mapped assets are present, non-empty, and valid PNG/JPEG/SVG binaries. It also checks references, Figma node IDs, client/server syntax, form validation, mocked Resend delivery, and a clean production build.
+`npm test` requires all 41 mapped assets to be present, non-empty and valid PNG/JPEG/SVG binaries. It also checks references, Figma node IDs, syntax, strict form validation, Turnstile action/hostname checks, provider failures, mocked Resend delivery and a clean build.
 
-`npm run build` creates `dist/` containing only the public pages, CSS, JavaScript, security headers, an API-only Functions route policy, robots policy and web-optimized assets. Raster art is resized only when larger than 1600px and converted to WebP. The current build reduces approximately 104.8MB of source exports to about 5.1MB of public assets. Source manifests, tooling, legal drafts, secrets and `.env` files are not served.
+`npm run build` creates `dist/` with the public pages, CSS, JavaScript, security headers, API-only Functions routes, robots policy and WebP-optimised assets. Source manifests, tooling, legal drafts, secrets and `.env` files are not served.
 
 Default builds are safe staging previews:
 
 - `noindex,nofollow` plus `robots.txt` disallow indexing;
-- lead capture is disabled in the UI and API;
-- placeholder privacy/terms drafts are excluded and replaced by `legal-pending.html`.
+- lead capture is disabled in both the UI and API; and
+- owner-review legal drafts are replaced by `legal-pending.html`.
 
-Approved launch builds require explicit environment gates:
+Approved launch builds require explicit gates:
 
 ```powershell
 $env:APPROVED_LEGAL='true'
+$env:LEGAL_APPROVAL_ID='<ID printed by the safe build>'
 $env:LEAD_CAPTURE_ENABLED='true'
+$env:TURNSTILE_SITE_KEY='<public widget site key>'
 $env:PUBLIC_LAUNCH='true'
+$env:PUBLIC_ORIGIN='https://parshapics.goldypov.com'
 npm run build
 ```
 
-The build refuses to enable lead capture without approved legal pages, and refuses a public launch unless both are enabled. Replace the clearly marked `privacy.html` and `terms.html` drafts with owner-approved text first.
+The build refuses lead capture without the public Turnstile key and the exact approved legal revision. It refuses public launch unless legal and lead capture are enabled and an HTTPS origin is supplied. Review `privacy.html`, `terms.html` and `legal/OWNER_APPROVAL.md`, then approve the exact ID printed by the safe build. A public build adds canonical metadata and a sitemap; safe builds remain no-indexed.
 
 ## Forms and Cloudflare Pages
 
-The trial, pricing and contact forms post JSON to the Cloudflare Pages Function at `POST /api/lead`. The endpoint validates all fields, enforces mutually exclusive pricing selections, checks same-origin requests, uses a honeypot, avoids PII logging, and only reports success after Resend accepts the email.
+The three forms post JSON to the Pages Function at `POST /api/lead`. The endpoint measures the streamed body against a 12KB limit, applies a strict schema and field limits, enforces valid pricing selections, checks same-origin requests, uses a honeypot, avoids PII logging, validates Turnstile server-side (including action and hostname), applies provider timeouts, and only reports success after Resend accepts the email.
 
-Required Cloudflare server-side variables/secrets:
+Required production bindings:
 
+- `APPROVED_LEGAL=true`
 - `LEAD_CAPTURE_ENABLED=true`
-- `RESEND_API_KEY`
-- `FROM_EMAIL` — a Resend-verified sender/domain
-- `CONTACT_EMAIL` — approved recipient address
+- `TURNSTILE_SECRET_KEY` (secret)
+- `TURNSTILE_ALLOWED_HOSTNAMES=parshapics.goldypov.com`
+- `RESEND_API_KEY` (secret)
+- `FROM_EMAIL` — a Resend-verified sender, preferably `Parsha Pics <forms@send.goldypov.com>`
+- `CONTACT_EMAIL=goldy@goldypov.com`
 
-The Lech Lecha sample is currently a **manual email fulfilment request**; the website does not expose or automatically download the high-resolution deliverables. Do not claim automatic delivery until an authorized sample and delivery flow are implemented and tested.
+The Lech Lecha sample is a **manual email fulfilment request**. The website does not expose or automatically download the high-resolution deliverables.
 
 Cloudflare Pages settings:
 
@@ -78,31 +81,32 @@ Cloudflare Pages settings:
 - Functions directory: repository `functions/` (outside `dist/`)
 - Production branch: `main`
 
-Use a preview deployment first. Keep the default safe build variables until legal text and email delivery are approved and tested. The repository's GitHub Pages workflow publishes this default safe build only as a no-index staging fallback; it does not run `/api/lead`. Do not attach or alter a custom domain without confirming the exact hostname.
+Keep the safe defaults for preview deployments. The GitHub Pages workflow is a no-index static fallback and does not execute `/api/lead`.
 
 ## Repository structure
 
 ```text
 index.html                 Landing page source
 styles.css                 Responsive design and Figma-aligned tokens
-script.js                  Dialogs, FAQ, pricing and form UX
+script.js                  Dialogs, FAQ, pricing, Turnstile and form UX
 assets/                    41 approved original source display assets
-figma-assets.json          Durable node-ID mapping (no temporary URLs)
-scripts/build.mjs          Isolated dist build + WebP optimization
-scripts/check-project.mjs  Fatal release asset/reference gate
+figma-assets.json          Durable node-ID mapping
+scripts/build.mjs          Isolated gated build + WebP optimisation
+scripts/check-project.mjs  Fatal asset/reference release gate
 scripts/browser-qa.mjs     Responsive and interaction QA
-functions/api/lead.js      Cloudflare Pages/Resend handler
-privacy.html / terms.html  Owner-review drafts, excluded from preview builds
+functions/api/lead.js      Hardened Pages/Turnstile/Resend handler
+privacy.html / terms.html  Owner-review drafts, excluded from safe builds
+legal/OWNER_APPROVAL.md    Required legal and operational decisions
 public/_headers            Security and cache headers
+wrangler.jsonc             Local and Pages deployment configuration
 ```
 
 ## Current launch blockers
 
-The code and safe preview build are ready. Production personal-data collection remains intentionally disabled until the owner supplies and approves:
+The code and safe preview build are ready. Production data collection remains disabled until the owner supplies or approves:
 
-1. final privacy, copyright and school-licence terms;
-2. the recipient email and verified Resend sender/domain plus API key;
-3. confirmation that Lech Lecha samples are fulfilled manually (current wording) or an authorized automatic-delivery package;
-4. Cloudflare authentication and, later, the exact custom hostname if one is desired.
-
-The Figma Design artboards were inspected directly. The unpublished Figma Sites editor was not used or modified, so edits that exist only there are outside this implementation.
+1. explicit approval of the exact privacy and terms drafts and the decisions in the legal checklist;
+2. a verified Resend sender/domain and API key (the recipient is confirmed as `goldy@goldypov.com`);
+3. manual Lech Lecha fulfilment, or an authorised automatic-delivery package;
+4. refreshed Cloudflare authentication; and
+5. replacement of Porkbun's current wildcard parking CNAME at `parshapics.goldypov.com`, without changing the apex, `www`, nameservers or Zoho mail records.
