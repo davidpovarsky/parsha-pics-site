@@ -1,0 +1,13 @@
+node_modules/
+.DS_Store
+.env
+.env.*
+!.env.example
+.dev.vars*
+*.log
+reference/
+dist/
+.wrangler/
+test-results/
+playwright-report/
+screenshots/
