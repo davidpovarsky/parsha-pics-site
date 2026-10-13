@@ -7,14 +7,15 @@ import { chromium } from 'playwright';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const port = 4174;
-const baseURL = `http://127.0.0.1:${port}`;
-const server = spawn(process.execPath, ['scripts/dev-server.mjs'], {
-  cwd: root,
-  env: { ...process.env, PORT: String(port), SITE_ROOT: 'dist' },
-  stdio: ['ignore', 'pipe', 'pipe']
-});
+const externalBaseURL = process.env.BASE_URL?.replace(/\/$/, '');
+const baseURL = externalBaseURL || `http://127.0.0.1:${port}`;
+const server = externalBaseURL ? null : spawn(process.execPath, ['scripts/dev-server.mjs'], {
+    cwd: root,
+    env: { ...process.env, PORT: String(port), SITE_ROOT: 'dist' },
+    stdio: ['ignore', 'pipe', 'pipe']
+  });
 
-const waitForServer = new Promise((resolve, reject) => {
+const waitForServer = externalBaseURL ? Promise.resolve() : new Promise((resolve, reject) => {
   const timeout = setTimeout(() => reject(new Error('Preview server did not start.')), 10000);
   server.stdout.on('data', (chunk) => {
     if (String(chunk).includes(baseURL)) {
@@ -69,6 +70,7 @@ try {
   const summaries = page.locator('.faq-list summary');
   await summaries.nth(0).click();
   await summaries.nth(1).click();
+  await page.waitForTimeout(100);
   assert.equal(await page.locator('.faq-list details[open]').count(), 1, 'Only one FAQ item should stay open');
 
   await page.locator('.licensing [data-open="pricing"]').click();
@@ -81,5 +83,5 @@ try {
   console.log('Browser QA passed at 360, 390, 768, 1024 and 1440px; screenshots saved for 390px and 1440px.');
 } finally {
   if (browser) await browser.close();
-  server.kill();
+  server?.kill();
 }

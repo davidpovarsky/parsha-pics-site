@@ -31,6 +31,8 @@ npm run test:browser  # QA at 360, 390, 768, 1024 and 1440px
 npm run sync-assets   # no-op when all source assets exist
 ```
 
+Set `BASE_URL` when the same browser QA should verify a deployed preview instead of the local `dist/` build.
+
 If a source asset is missing, set a read-only `FIGMA_TOKEN` locally and run `npm run sync-assets`. Never commit the token.
 
 ## Release gates and build output
