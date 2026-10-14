@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { onRequestPost } from '../functions/api/lead.js';
-import { onRequestPost as onDownloadPost, onRequestGet as onDownloadGet } from '../functions/api/trial-download.js';
+import { onRequest as onDownload } from '../functions/api/trial-download.js';
 
 const GITHUB_DOWNLOAD_URL = 'https://github.com/davidpovarsky/parsha-pics-site/releases/download/v1.0.0/Lech-Lecha-Parsha-Pics-Sample.zip';
 
@@ -160,12 +160,8 @@ await withFetch(async (url) => {
 });
 
 // Endpoint tests for /api/trial-download
-const dlGet = onDownloadGet({ env: BASE_ENV });
-assert.equal(dlGet.status, 302, 'GET /api/trial-download redirects to release asset');
-assert.equal(dlGet.headers.get('location'), GITHUB_DOWNLOAD_URL);
-
-const dlPost = onDownloadPost({ env: BASE_ENV });
-assert.equal(dlPost.status, 302, 'POST /api/trial-download redirects to release asset');
-assert.equal(dlPost.headers.get('location'), GITHUB_DOWNLOAD_URL);
+const dlRes = onDownload({ env: BASE_ENV });
+assert.equal(dlRes.status, 302, '/api/trial-download redirects to release asset');
+assert.equal(dlRes.headers.get('location'), GITHUB_DOWNLOAD_URL);
 
 console.log('Serverless form checks passed (gates, actual body limit, strict schema, origin, honeypot, Turnstile action/hostname, provider failures, email delivery, and GitHub release download link).');
