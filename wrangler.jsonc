@@ -6,9 +6,9 @@
   "env": {
     "production": {
       "vars": {
-        "APPROVED_LEGAL": "false",
+        "APPROVED_LEGAL": "true",
         "LEGAL_APPROVAL_ID": "484331c963b5",
-        "LEAD_CAPTURE_ENABLED": "false",
+        "LEAD_CAPTURE_ENABLED": "true",
         "PUBLIC_LAUNCH": "false",
         "PUBLIC_ORIGIN": "https://parshapics.goldypov.com",
         "TURNSTILE_SITE_KEY": "0x4AAAAAAFWFxDsA88ersqg4",
