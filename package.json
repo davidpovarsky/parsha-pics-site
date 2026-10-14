@@ -9,8 +9,9 @@
     "sync-assets": "node scripts/sync-assets.mjs",
     "build": "node scripts/build.mjs",
     "preview:cloudflare": "wrangler pages dev dist --ip 127.0.0.2 --port 8791",
-    "test": "node --check script.js && node --check functions/api/lead.js && node --check functions/api/trial-download.js && node --check scripts/dev-server.mjs && node --check scripts/sync-assets.mjs && node --check scripts/build.mjs && node scripts/check-project.mjs && node scripts/test-serverless.mjs && npm run build",
-    "test:browser": "node scripts/browser-qa.mjs"
+    "test": "node --check script.js && node --check functions/api/lead.js && node --check functions/api/trial-download.js && node --check scripts/dev-server.mjs && node --check scripts/sync-assets.mjs && node --check scripts/build.mjs && node --check scripts/real-production-e2e-submission.mjs && node scripts/check-project.mjs && node scripts/test-serverless.mjs && npm run build",
+    "test:browser": "node scripts/browser-qa.mjs",
+    "test:production": "node scripts/real-production-e2e-submission.mjs"
   },
   "engines": {
     "node": ">=20"
