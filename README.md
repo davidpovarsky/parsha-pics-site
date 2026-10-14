@@ -85,7 +85,7 @@ Current hosted state:
 
 - Pages project: `parsha-pics`
 - Safe production URL: <https://parsha-pics.pages.dev>
-- Hardened branch preview: <https://318681ca.parsha-pics.pages.dev>
+- Hardened branch preview: <https://agent-cloudflare-production.parsha-pics.pages.dev>
 - Proposed custom hostname: `parshapics.goldypov.com` (pending the narrowly scoped Porkbun CNAME)
 - GitHub PR: <https://github.com/davidpovarsky/parsha-pics-site/pull/1>
 

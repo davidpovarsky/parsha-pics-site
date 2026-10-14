@@ -35,7 +35,7 @@ The public DNS is hosted at Porkbun, not in a Cloudflare zone. Connecting a Page
 
 - Pages project: `parsha-pics`, connected through Cloudflare's GitHub integration to `davidpovarsky/parsha-pics-site` with `main` as the production branch.
 - Safe production URL: `https://parsha-pics.pages.dev` (deployment `7a178d99-7e4b-496a-9c1b-56d928aac2d7`, source `c060d2c`).
-- Hardened branch preview: `https://318681ca.parsha-pics.pages.dev` (deployment `318681ca-a3e8-40a3-9865-e28105de996b`, source `b1e7d5d`).
+- Stable hardened branch preview: `https://agent-cloudflare-production.parsha-pics.pages.dev` (tracks the pull-request branch; immutable deployment IDs are recorded in release reports rather than committed here).
 - Both the GitHub CI check and Cloudflare Pages check pass on pull request #1.
 - The deployed preview passed responsive browser QA at 360, 390, 768, 1024 and 1440 pixels. Its real Pages Function returns the deliberate 503 response for disabled submissions and 405 for unsupported methods.
 - Security headers include the restrictive CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` and `X-Robots-Tag: noindex`.
