@@ -14,6 +14,8 @@
     if (!leadCaptureEnabled || !turnstileSiteKey || !window.turnstile) return;
     for (const form of document.querySelectorAll('.lead-form')) {
       if (turnstileWidgets.has(form)) continue;
+      const dialog = form.closest('dialog');
+      if (dialog && !dialog.open) continue;
       const slot = form.querySelector('[data-turnstile]');
       if (!slot) continue;
       const widgetId = window.turnstile.render(slot, {
@@ -33,6 +35,7 @@
     returnFocus = document.activeElement;
     dialog.showModal();
     dialog.querySelector('input:not(.honeypot)')?.focus();
+    renderTurnstileWidgets();
   };
   for (const trigger of document.querySelectorAll('[data-open]')) {
     trigger.addEventListener('click', (event) => {

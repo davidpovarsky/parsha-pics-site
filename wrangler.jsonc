@@ -9,7 +9,7 @@
         "APPROVED_LEGAL": "true",
         "LEGAL_APPROVAL_ID": "484331c963b5",
         "LEAD_CAPTURE_ENABLED": "true",
-        "PUBLIC_LAUNCH": "false",
+        "PUBLIC_LAUNCH": "true",
         "PUBLIC_ORIGIN": "https://parshapics.goldypov.com",
         "TURNSTILE_SITE_KEY": "0x4AAAAAAFWFxDsA88ersqg4",
         "TURNSTILE_ALLOWED_HOSTNAMES": "parshapics.goldypov.com",
