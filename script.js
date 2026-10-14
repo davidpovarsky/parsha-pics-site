@@ -332,6 +332,60 @@
     }
   }
 
+  // Research section responsive leader lines
+  const initResearchLeaders = () => {
+    const scene = document.querySelector('.research-scene');
+    const svg = document.querySelector('.research-leaders');
+    const img = document.querySelector('.research-art-wrapper img');
+    const cards = document.querySelectorAll('.annotation-list .annotation');
+    if (!scene || !svg || !img || cards.length !== 5) return;
+
+    const targets = [
+      [0.29, 0.22], // 1: Og tells Avraham
+      [0.21, 0.63], // 2: Four kings
+      [0.80, 0.46], // 3: Five kings
+      [0.41, 0.64], // 4: Valley of Siddim
+      [0.72, 0.78]  // 5: They lost
+    ];
+
+    const updateLeaders = () => {
+      if (window.innerWidth <= 1024) {
+        svg.innerHTML = '';
+        return;
+      }
+      const sceneRect = scene.getBoundingClientRect();
+      const imgRect = img.getBoundingClientRect();
+      if (!imgRect.width || !imgRect.height) return;
+
+      let markup = '';
+      cards.forEach((card, i) => {
+        const cardRect = card.getBoundingClientRect();
+        const startX = cardRect.right - sceneRect.left;
+        const startY = cardRect.top + cardRect.height / 2 - sceneRect.top;
+        const endX = (imgRect.left - sceneRect.left) + imgRect.width * targets[i][0];
+        const endY = (imgRect.top - sceneRect.top) + imgRect.height * targets[i][1];
+        const stubX = startX + 24;
+        const cpX = stubX + (endX - stubX) * 0.4;
+        const d = `M ${startX} ${startY} L ${stubX} ${startY} C ${cpX} ${startY}, ${cpX} ${endY}, ${endX} ${endY}`;
+        markup += `<path class="leader-line" d="${d}" stroke="#b93b38" stroke-width="1.8" fill="none" stroke-linecap="round" />`;
+        markup += `<circle cx="${endX}" cy="${endY}" r="6.5" fill="#b93b38" stroke="#ffffff" stroke-width="2" />`;
+        markup += `<circle cx="${endX}" cy="${endY}" r="2" fill="#ffffff" />`;
+      });
+
+      svg.setAttribute('viewBox', `0 0 ${sceneRect.width} ${sceneRect.height}`);
+      svg.innerHTML = markup;
+    };
+
+    updateLeaders();
+    window.addEventListener('resize', updateLeaders, { passive: true });
+    if (img.complete) updateLeaders();
+    else img.addEventListener('load', updateLeaders);
+    if ('ResizeObserver' in window) {
+      new ResizeObserver(updateLeaders).observe(scene);
+    }
+  };
+
+  initResearchLeaders();
   renderTurnstileWidgets();
 
   for (const image of document.querySelectorAll('img')) {
