@@ -209,6 +209,9 @@ p { line-height: 1.55; }
 .lead-form input:focus, .lead-form textarea:focus { border-color: var(--red); }
 .lead-form .honeypot { position: absolute !important; height: 1px !important; width: 1px !important; overflow: hidden !important; left: -10000px !important; }
 .lead-form .btn-full { margin-top: 10px; }
+.turnstile-slot { min-height: 65px; margin-top: 14px; }
+.form-consent { margin: 10px 0 0; color: var(--muted); font-size: .78rem; line-height: 1.45; }
+.form-consent a { text-decoration: underline; }
 .form-status { margin: 15px 0 0; min-height: 1.5rem; font-size: .85rem; color: var(--red); }
 .form-status[data-state='success'] { color: #23704a; }
 .form-status[data-state='review'] { color: var(--muted); }

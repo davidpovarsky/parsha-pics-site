@@ -6,7 +6,26 @@
     contact: document.getElementById('contactDialog')
   };
   const leadCaptureEnabled = document.body.dataset.leadCapture === 'enabled';
+  const turnstileSiteKey = document.body.dataset.turnstileSiteKey || '';
+  const turnstileWidgets = new Map();
   let returnFocus = null;
+
+  const renderTurnstileWidgets = () => {
+    if (!leadCaptureEnabled || !turnstileSiteKey || !window.turnstile) return;
+    for (const form of document.querySelectorAll('.lead-form')) {
+      if (turnstileWidgets.has(form)) continue;
+      const slot = form.querySelector('[data-turnstile]');
+      if (!slot) continue;
+      const widgetId = window.turnstile.render(slot, {
+        sitekey: turnstileSiteKey,
+        action: `lead_${form.dataset.type}`,
+        theme: 'auto',
+        'response-field': false
+      });
+      turnstileWidgets.set(form, widgetId);
+    }
+  };
+  window.onTurnstileLoad = renderTurnstileWidgets;
 
   const openDialog = (key) => {
     const dialog = dialogs[key];
@@ -72,6 +91,15 @@
         status.textContent = 'Please select at least one Sefer or the full collection.';
         return;
       }
+      const widgetId = turnstileWidgets.get(form);
+      const turnstileToken = widgetId === undefined || !window.turnstile
+        ? ''
+        : window.turnstile.getResponse(widgetId);
+      if (!turnstileToken) {
+        status.dataset.state = 'error';
+        status.textContent = 'Please complete the verification and try again.';
+        return;
+      }
       const payload = {
         type,
         name: String(data.get('name') || '').trim(),
@@ -79,7 +107,8 @@
         school: String(data.get('school') || '').trim(),
         website: String(data.get('website') || ''),
         message: String(data.get('message') || '').trim(),
-        sefarim: data.getAll('sefarim')
+        sefarim: data.getAll('sefarim'),
+        turnstileToken
       };
       status.textContent = 'Sending your request...';
       status.dataset.state = 'loading';
@@ -103,11 +132,14 @@
         status.dataset.state = 'error';
         status.textContent = err.message || 'Something went wrong. Please try again.';
       } finally {
+        if (widgetId !== undefined && window.turnstile) window.turnstile.reset(widgetId);
         button.disabled = false;
         button.innerHTML = previousText;
       }
     });
   }
+
+  renderTurnstileWidgets();
 
   for (const image of document.querySelectorAll('img')) {
     image.addEventListener('error', () => {
