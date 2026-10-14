@@ -72,7 +72,7 @@ Required production bindings:
 - `FROM_EMAIL` — a Resend-verified sender, preferably `Parsha Pics <forms@send.goldypov.com>`
 - `CONTACT_EMAIL=goldy@goldypov.com`
 
-The Lech Lecha sample is a **manual email fulfilment request**. The website does not expose or automatically download the high-resolution deliverables.
+The Lech Lecha sample is delivered automatically via verified GitHub Release asset download after verified form submission and Resend email notification.
 
 Cloudflare Pages settings:
 

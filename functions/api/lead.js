@@ -1,4 +1,5 @@
 // Cloudflare Pages Function. Keep all provider credentials in server-side bindings.
+const DEFAULT_SAMPLE_DOWNLOAD_URL = 'https://github.com/davidpovarsky/parsha-pics-site/releases/download/v1.0.0/Lech-Lecha-Parsha-Pics-Sample.zip';
 const MAX_BODY_BYTES = 12_000;
 const PROVIDER_TIMEOUT_MS = 8_000;
 const TURNSTILE_TIMEOUT_MS = 5_000;
@@ -177,7 +178,16 @@ export async function onRequestPost({ request, env }) {
       console.error('Email provider request failed with status:', response.status);
       return answer({ error: 'Sorry, your message could not be sent. Please try again later.' }, 502);
     }
-    return answer({ success: true });
+    let download = null;
+    if (type === 'trial') {
+      download = {
+        url: env.SAMPLE_DOWNLOAD_URL || DEFAULT_SAMPLE_DOWNLOAD_URL,
+        filename: 'Lech-Lecha-Parsha-Pics-Sample.zip',
+        sizeBytes: 110466805,
+        approxSize: '110 MB'
+      };
+    }
+    return answer({ success: true, ...(download ? { download } : {}) });
   } catch (error) {
     console.error('Email provider unavailable:', error instanceof Error ? error.name : 'unknown error');
     return answer({ error: 'Sorry, your message could not be sent. Please try again later.' }, 502);

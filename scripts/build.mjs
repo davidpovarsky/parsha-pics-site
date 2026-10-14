@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readFile, rm, stat, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -19,7 +19,7 @@ try {
   }
 } catch {}
 const legalSources = await Promise.all(['privacy.html', 'terms.html'].map((name) => readFile(join(root, name), 'utf8')));
-const legalApprovalId = createHash('sha256').update(legalSources.join('\n---PARSHAPICS-LEGAL---\n')).digest('hex').slice(0, 12);
+const legalApprovalId = createHash('sha256').update(legalSources.map((s) => s.replace(/\r\n/g, '\n')).join('\n---PARSHAPICS-LEGAL---\n')).digest('hex').slice(0, 12);
 if (requestedLeadCapture && !approvedLegal) throw new Error('LEAD_CAPTURE_ENABLED requires APPROVED_LEGAL=true.');
 if (requestedLeadCapture && !turnstileSiteKey) throw new Error('LEAD_CAPTURE_ENABLED requires TURNSTILE_SITE_KEY.');
 if (requestedLeadCapture && !/^[A-Za-z0-9_-]{20,100}$/.test(turnstileSiteKey)) throw new Error('TURNSTILE_SITE_KEY has an invalid format.');
@@ -45,6 +45,11 @@ for (const asset of manifest.assets) {
     await cp(source, join(dist, 'assets', asset.file));
     replacement.set(asset.file, asset.file);
   }
+}
+
+for (const [from, to] of replacement) {
+  const info = await stat(join(dist, 'assets', to));
+  if (!info.isFile() || info.size === 0) throw new Error(`Asset verification failed for: ${to}`);
 }
 
 const transformAssets = (text) => {

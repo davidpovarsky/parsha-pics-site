@@ -5,7 +5,7 @@ The privacy notice and website terms are product-specific drafts, not legal advi
 ## Decisions to confirm
 
 - Confirm the controller/trader's full legal name, trading name, business structure, and any address or registration details that must be disclosed.
-- Confirm that enquiries and the free Lech Lecha sample are fulfilled manually by email.
+- Confirm that enquiries are answered by email, and the free Lech Lecha evaluation sample is delivered for instant on-site download after verified form submission.
 - Confirm that the forms are for adult school staff and must not collect pupil or child data.
 - Confirm Cloudflare, Turnstile, Resend and Zoho as the actual providers and review their data-processing and international-transfer terms.
 - Adopt a documented retention schedule for unsuccessful enquiries, customer correspondence, contracts and accounting records.

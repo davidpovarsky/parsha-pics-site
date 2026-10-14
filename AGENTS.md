@@ -21,7 +21,7 @@ This repository is the standalone coded Parsha Pics website. Work here directly;
 - Never put email/provider tokens in client code, files, screenshots, logs or Git history.
 - Forms work only through `functions/api/lead.js`; keep `LEAD_CAPTURE_ENABLED` enforced on both client and server.
 - `privacy.html` and `terms.html` are owner-review drafts. Do not enable lead capture or `PUBLIC_LAUNCH` until final text is approved.
-- Keep the Lech Lecha flow described as a manual request until authorized automatic delivery is implemented and verified.
+- Authorized automatic delivery of the Lech Lecha sample is implemented via GitHub Release assets after verified form submission and Resend email notification. Keep print-master files and private sample PDFs out of Git history.
 - Publish only `dist/`; never use the repository root as the Cloudflare Pages output directory.
 - Keep `dist/`, `.env*`, `.dev.vars*`, `.wrangler/`, screenshots and reports out of Git.
 - The public repository may contain the approved display exports in `assets/`, but never add print-master files or private sample PDFs.

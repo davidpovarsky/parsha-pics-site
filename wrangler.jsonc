@@ -7,10 +7,11 @@
     "production": {
       "vars": {
         "APPROVED_LEGAL": "true",
-        "LEGAL_APPROVAL_ID": "484331c963b5",
+        "LEGAL_APPROVAL_ID": "79ab41d0cfa8",
         "LEAD_CAPTURE_ENABLED": "true",
         "PUBLIC_LAUNCH": "true",
         "PUBLIC_ORIGIN": "https://parshapics.goldypov.com",
+        "SAMPLE_DOWNLOAD_URL": "https://github.com/davidpovarsky/parsha-pics-site/releases/download/v1.0.0/Lech-Lecha-Parsha-Pics-Sample.zip",
         "TURNSTILE_SITE_KEY": "0x4AAAAAAFWFxDsA88ersqg4",
         "TURNSTILE_ALLOWED_HOSTNAMES": "parshapics.goldypov.com",
         "FROM_EMAIL": "Parsha Pics <forms@send.goldypov.com>",
@@ -20,10 +21,11 @@
     "preview": {
       "vars": {
         "APPROVED_LEGAL": "false",
-        "LEGAL_APPROVAL_ID": "484331c963b5",
+        "LEGAL_APPROVAL_ID": "79ab41d0cfa8",
         "LEAD_CAPTURE_ENABLED": "false",
         "PUBLIC_LAUNCH": "false",
         "PUBLIC_ORIGIN": "https://agent-cloudflare-production.parsha-pics.pages.dev",
+        "SAMPLE_DOWNLOAD_URL": "https://github.com/davidpovarsky/parsha-pics-site/releases/download/v1.0.0/Lech-Lecha-Parsha-Pics-Sample.zip",
         "TURNSTILE_SITE_KEY": "0x4AAAAAAFWFvcch8EzeYU81",
         "TURNSTILE_ALLOWED_HOSTNAMES": "agent-cloudflare-production.parsha-pics.pages.dev",
         "FROM_EMAIL": "Parsha Pics <forms@send.goldypov.com>",

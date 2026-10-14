@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
 import { onRequestPost } from '../functions/api/lead.js';
+import { onRequestPost as onDownloadPost, onRequestGet as onDownloadGet } from '../functions/api/trial-download.js';
+
+const GITHUB_DOWNLOAD_URL = 'https://github.com/davidpovarsky/parsha-pics-site/releases/download/v1.0.0/Lech-Lecha-Parsha-Pics-Sample.zip';
 
 const BASE_ENV = {
   APPROVED_LEGAL: 'true',
@@ -8,19 +11,29 @@ const BASE_ENV = {
   TURNSTILE_ALLOWED_HOSTNAMES: 'example.com',
   RESEND_API_KEY: 'resend-secret',
   FROM_EMAIL: 'Parsha Pics <forms@example.com>',
-  CONTACT_EMAIL: 'owner@example.com'
+  CONTACT_EMAIL: 'owner@example.com',
+  SAMPLE_DOWNLOAD_URL: GITHUB_DOWNLOAD_URL
 };
+
 const request = (body, headers = {}) => new Request('https://example.com/api/lead', {
   method: 'POST',
   headers: { 'content-type': 'application/json', origin: 'https://example.com', ...headers },
   body: typeof body === 'string' ? body : JSON.stringify(body)
 });
+const downloadRequest = (body, headers = {}) => new Request('https://example.com/api/trial-download', {
+  method: 'POST',
+  headers: { 'content-type': 'application/json', origin: 'https://example.com', ...headers },
+  body: typeof body === 'string' ? body : JSON.stringify(body)
+});
+
 const valid = (overrides = {}) => ({
   type: 'trial', name: 'Teacher Example', email: 'teacher@example.com', school: '', message: '',
   website: '', sefarim: [], turnstileToken: 'valid-token', ...overrides
 });
 const invoke = (body, env = BASE_ENV, headers) => onRequestPost({ request: request(body, headers), env });
+const invokeDownload = (body, env = BASE_ENV, headers) => onDownloadPost({ request: downloadRequest(body, headers), env });
 
+// 1. Basic validation and security gates
 let response = await invoke(valid(), {});
 assert.equal(response.status, 503, 'both runtime launch gates are mandatory');
 response = await invoke(valid(), { LEAD_CAPTURE_ENABLED: 'true' });
@@ -53,8 +66,13 @@ response = await invoke(valid({ sefarim: ['Shemos'] }));
 assert.equal(response.status, 400);
 response = await invoke(valid({ turnstileToken: '' }));
 assert.equal(response.status, 400, 'Turnstile token is mandatory');
+
+// Honeypot: must return success: true but NEVER return a download link
 response = await invoke(valid({ website: 'spambot' }));
 assert.equal(response.status, 200, 'honeypot submissions are silently accepted without providers');
+const honeypotJson = await response.json();
+assert.equal(honeypotJson.success, true);
+assert.equal(honeypotJson.download, undefined, 'honeypot submissions must NEVER return a download link');
 
 const originalFetch = globalThis.fetch;
 const withFetch = async (implementation, callback) => {
@@ -65,6 +83,8 @@ const withFetch = async (implementation, callback) => {
 await withFetch(async () => new Response(JSON.stringify({ success: false, 'error-codes': ['invalid-input-response'] }), { status: 200 }), async () => {
   response = await invoke(valid());
   assert.equal(response.status, 403, 'invalid Turnstile result is rejected');
+  const json = await response.json().catch(() => ({}));
+  assert.equal(json.download, undefined, 'failed Turnstile must not issue download link');
 });
 await withFetch(async () => new Response(JSON.stringify({ success: true, action: 'lead_contact', hostname: 'example.com' }), { status: 200 }), async () => {
   response = await invoke(valid());
@@ -79,6 +99,7 @@ await withFetch(async () => new Response('unavailable', { status: 503 }), async 
   assert.equal(response.status, 502, 'Turnstile provider errors fail closed');
 });
 
+// Pricing submission: sends mail, escapes HTML, does NOT return download link
 let outgoingEmail;
 await withFetch(async (url, options) => {
   if (String(url).includes('/turnstile/')) {
@@ -91,7 +112,9 @@ await withFetch(async (url, options) => {
     type: 'pricing', name: '<Teacher>', school: 'Example School', sefarim: ['Shemos']
   }));
   assert.equal(response.status, 200);
-  assert.equal((await response.json()).success, true);
+  const json = await response.json();
+  assert.equal(json.success, true);
+  assert.equal(json.download, undefined, 'pricing requests must not issue download link');
   assert.equal(outgoingEmail.url, 'https://api.resend.com/emails');
   const body = JSON.parse(outgoingEmail.options.body);
   assert.equal(body.reply_to, 'teacher@example.com');
@@ -100,6 +123,7 @@ await withFetch(async (url, options) => {
   assert.match(body.html, /&lt;Teacher&gt;/, 'email HTML is escaped');
 });
 
+// Email failure: fails safely, no download link
 await withFetch(async (url) => {
   if (String(url).includes('/turnstile/')) {
     return new Response(JSON.stringify({ success: true, action: 'lead_trial', hostname: 'example.com' }), { status: 200 });
@@ -111,9 +135,37 @@ await withFetch(async (url) => {
   try {
     response = await invoke(valid());
     assert.equal(response.status, 502, 'email provider failure is reported safely');
+    const json = await response.json();
+    assert.equal(json.download, undefined, 'failed email must not issue download link');
   } finally {
     console.error = originalConsoleError;
   }
 });
 
-console.log('Serverless form checks passed (gates, actual body limit, strict schema, origin, honeypot, Turnstile action/hostname, provider failures and email mock).');
+// Trial submission: legitimate, Turnstile pass, email sent -> returns GitHub release download URL
+await withFetch(async (url) => {
+  if (String(url).includes('/turnstile/')) {
+    return new Response(JSON.stringify({ success: true, action: 'lead_trial', hostname: 'example.com' }), { status: 200 });
+  }
+  return new Response('{}', { status: 200 });
+}, async () => {
+  response = await invoke(valid());
+  assert.equal(response.status, 200);
+  const json = await response.json();
+  assert.equal(json.success, true);
+  assert.ok(json.download, 'trial success must return download info');
+  assert.equal(json.download.url, GITHUB_DOWNLOAD_URL);
+  assert.equal(json.download.filename, 'Lech-Lecha-Parsha-Pics-Sample.zip');
+  assert.equal(json.download.sizeBytes, 110466805);
+});
+
+// Endpoint tests for /api/trial-download
+const dlGet = onDownloadGet({ env: BASE_ENV });
+assert.equal(dlGet.status, 302, 'GET /api/trial-download redirects to release asset');
+assert.equal(dlGet.headers.get('location'), GITHUB_DOWNLOAD_URL);
+
+const dlPost = onDownloadPost({ env: BASE_ENV });
+assert.equal(dlPost.status, 302, 'POST /api/trial-download redirects to release asset');
+assert.equal(dlPost.headers.get('location'), GITHUB_DOWNLOAD_URL);
+
+console.log('Serverless form checks passed (gates, actual body limit, strict schema, origin, honeypot, Turnstile action/hostname, provider failures, email delivery, and GitHub release download link).');
