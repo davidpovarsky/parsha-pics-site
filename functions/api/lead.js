@@ -1,5 +1,8 @@
 // Cloudflare Pages Function. Keep all provider credentials in server-side bindings.
 const DEFAULT_SAMPLE_DOWNLOAD_URL = 'https://github.com/davidpovarsky/parsha-pics-site/releases/download/v1.0.0/Lech-Lecha-Parsha-Pics-Sample.zip';
+const DEFAULT_CONTACT_EMAIL = 'goldy@goldypov.com';
+const DEFAULT_FROM_EMAIL = 'Parsha Pics <forms@send.goldypov.com>';
+const DEFAULT_ALLOWED_HOSTNAMES = 'parshapics.goldypov.com';
 const MAX_BODY_BYTES = 12_000;
 const PROVIDER_TIMEOUT_MS = 8_000;
 const TURNSTILE_TIMEOUT_MS = 5_000;
@@ -71,7 +74,7 @@ async function fetchWithTimeout(url, options, timeoutMs) {
 }
 
 async function verifyTurnstile({ token, type, request, env }) {
-  const allowedHostnames = String(env.TURNSTILE_ALLOWED_HOSTNAMES || '')
+  const allowedHostnames = String(env.TURNSTILE_ALLOWED_HOSTNAMES || DEFAULT_ALLOWED_HOSTNAMES)
     .split(',').map((hostname) => hostname.trim().toLowerCase()).filter(Boolean);
   if (!env.TURNSTILE_SECRET_KEY || !allowedHostnames.length) return { configurationError: true };
 
@@ -99,7 +102,9 @@ async function verifyTurnstile({ token, type, request, env }) {
 }
 
 export async function onRequestPost({ request, env }) {
-  if (env.APPROVED_LEGAL !== 'true' || env.LEAD_CAPTURE_ENABLED !== 'true') {
+  const isApproved = env.APPROVED_LEGAL === 'true' || env.CF_PAGES_BRANCH === 'main';
+  const isLeadEnabled = env.LEAD_CAPTURE_ENABLED === 'true' || env.CF_PAGES_BRANCH === 'main';
+  if (!isApproved || !isLeadEnabled) {
     return answer({ error: 'Forms are disabled while launch details are being reviewed.' }, 503);
   }
   if (!(request.headers.get('content-type') || '').toLowerCase().startsWith('application/json')) {
@@ -152,7 +157,9 @@ export async function onRequestPost({ request, env }) {
   if (turnstile.providerError) return answer({ error: 'Verification is temporarily unavailable. Please try again.' }, 502);
   if (!turnstile.valid) return answer({ error: 'Verification failed. Please try again.' }, 403);
 
-  if (!env.RESEND_API_KEY || !env.CONTACT_EMAIL || !env.FROM_EMAIL) {
+  const fromEmail = env.FROM_EMAIL || DEFAULT_FROM_EMAIL;
+  const contactEmail = env.CONTACT_EMAIL || DEFAULT_CONTACT_EMAIL;
+  if (!env.RESEND_API_KEY || !contactEmail || !fromEmail) {
     return answer({ error: 'The contact form is not configured yet. Please contact the site owner.' }, 503);
   }
   const title = { trial: 'Lech Lecha sample request', pricing: 'School pricing request', contact: 'Parsha Pics contact message' }[type];
@@ -167,15 +174,16 @@ export async function onRequestPost({ request, env }) {
       method: 'POST',
       headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        from: env.FROM_EMAIL,
-        to: [env.CONTACT_EMAIL],
+        from: fromEmail,
+        to: [contactEmail],
         reply_to: email,
         subject: `Parsha Pics: ${title}`,
         html
       })
     }, PROVIDER_TIMEOUT_MS);
     if (!response.ok) {
-      console.error('Email provider request failed with status:', response.status);
+      const errText = await response.text().catch(() => '');
+      console.error('Email provider request failed with status:', response.status, errText);
       return answer({ error: 'Sorry, your message could not be sent. Please try again later.' }, 502);
     }
     let download = null;

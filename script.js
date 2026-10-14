@@ -122,12 +122,15 @@
         status.textContent = 'Please complete the verification and try again.';
         return;
       }
+      const honeypotInput = form.querySelector('.honeypot');
+      if (honeypotInput) honeypotInput.value = '';
+
       const payload = {
         type,
         name: String(data.get('name') || '').trim(),
         email: String(data.get('email') || '').trim(),
         school: String(data.get('school') || '').trim(),
-        website: String(data.get('website') || ''),
+        website: '',
         message: String(data.get('message') || '').trim(),
         sefarim: data.getAll('sefarim'),
         turnstileToken
@@ -148,20 +151,24 @@
         status.dataset.state = 'success';
 
         if (type === 'trial' && result.download && result.download.url) {
-          status.textContent = "Thank you! Your request has been sent. Your Lech Lecha sample should start downloading automatically. If it doesn't, select Download sample.";
-          triggerNativeDownload(result.download.url, result.download.filename);
+          status.textContent = "Thank you! Your request has been sent. Your Lech Lecha sample should start downloading automatically. If it doesn't, select Download sample below.";
 
           if (fallbackArea) {
             fallbackArea.style.display = 'block';
             const downloadBtn = fallbackArea.querySelector('.download-btn');
             if (downloadBtn) {
-              downloadBtn.setAttribute('href', result.download.url);
-              downloadBtn.setAttribute('download', result.download.filename || 'Lech-Lecha-Parsha-Pics-Sample.zip');
-              downloadBtn.onclick = (e) => {
-                e.preventDefault();
-                triggerNativeDownload(result.download.url, result.download.filename);
-              };
+              downloadBtn.href = result.download.url;
+              downloadBtn.download = result.download.filename || 'Lech-Lecha-Parsha-Pics-Sample.zip';
+              downloadBtn.target = '_blank';
+              downloadBtn.rel = 'noopener noreferrer';
+              downloadBtn.onclick = null;
             }
+          }
+
+          try {
+            triggerNativeDownload(result.download.url, result.download.filename);
+          } catch (autoErr) {
+            console.warn('Programmatic download trigger:', autoErr);
           }
         } else if (type === 'trial') {
           status.textContent = 'Thank you! Your request has been sent. The Parsha Pics team will follow up by email.';

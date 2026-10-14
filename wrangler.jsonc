@@ -3,6 +3,18 @@
   "name": "parsha-pics",
   "compatibility_date": "2026-10-06",
   "pages_build_output_dir": "dist",
+  "vars": {
+    "APPROVED_LEGAL": "true",
+    "LEGAL_APPROVAL_ID": "79ab41d0cfa8",
+    "LEAD_CAPTURE_ENABLED": "true",
+    "PUBLIC_LAUNCH": "true",
+    "PUBLIC_ORIGIN": "https://parshapics.goldypov.com",
+    "SAMPLE_DOWNLOAD_URL": "https://github.com/davidpovarsky/parsha-pics-site/releases/download/v1.0.0/Lech-Lecha-Parsha-Pics-Sample.zip",
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAFWFxDsA88ersqg4",
+    "TURNSTILE_ALLOWED_HOSTNAMES": "parshapics.goldypov.com",
+    "FROM_EMAIL": "Parsha Pics <forms@send.goldypov.com>",
+    "CONTACT_EMAIL": "goldy@goldypov.com"
+  },
   "env": {
     "production": {
       "vars": {
