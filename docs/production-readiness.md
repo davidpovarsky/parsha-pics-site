@@ -1,6 +1,6 @@
 # Production readiness record
 
-Recorded 13–14 October 2026 before any DNS or production-service change. No DNS record, nameserver, mailbox setting, Cloudflare project, Resend identity or secret was changed during this audit.
+Recorded 13–14 October 2026. The table below preserves the DNS state observed before any launch-related change. Since that audit, a safe Cloudflare Pages project and Turnstile widgets have been created; no Porkbun DNS record, nameserver, mailbox setting, Resend identity or provider secret has been changed.
 
 ## Public DNS before state
 
@@ -31,6 +31,17 @@ The public DNS is hosted at Porkbun, not in a Cloudflare zone. Connecting a Page
 - Responsive browser QA: passed at 360, 390, 768, 1024 and 1440 pixels for the safe build and for the mocked lead-enabled client path.
 - API tests: malformed JSON, actual oversized body, wrong types, foreign origin, unknown fields, pricing rules, honeypot, missing/invalid Turnstile, action mismatch, hostname mismatch, Turnstile outage, Resend outage, HTML escaping and successful mocked delivery.
 
+## Cloudflare staging state
+
+- Pages project: `parsha-pics`, connected through Cloudflare's GitHub integration to `davidpovarsky/parsha-pics-site` with `main` as the production branch.
+- Safe production URL: `https://parsha-pics.pages.dev` (deployment `7a178d99-7e4b-496a-9c1b-56d928aac2d7`, source `c060d2c`).
+- Hardened branch preview: `https://318681ca.parsha-pics.pages.dev` (deployment `318681ca-a3e8-40a3-9865-e28105de996b`, source `b1e7d5d`).
+- Both the GitHub CI check and Cloudflare Pages check pass on pull request #1.
+- The deployed preview passed responsive browser QA at 360, 390, 768, 1024 and 1440 pixels. Its real Pages Function returns the deliberate 503 response for disabled submissions and 405 for unsupported methods.
+- Security headers include the restrictive CSP, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy` and `X-Robots-Tag: noindex`.
+- Separate managed Turnstile widgets exist for preview (`parsha-pics.pages.dev`, `localhost`) and production (`parshapics.goldypov.com`). Their secrets are not present in source or client output.
+- `parshapics.goldypov.com` is registered as a pending Pages custom domain. Cloudflare requires an explicit Porkbun CNAME named `parshapics` targeting `parsha-pics.pages.dev` before TLS and routing can complete.
+
 ## Gates still closed
 
 - `APPROVED_LEGAL=false`
@@ -38,4 +49,4 @@ The public DNS is hosted at Porkbun, not in a Cloudflare zone. Connecting a Page
 - `PUBLIC_LAUNCH=false`
 - Current legal approval ID: `484331c963b5` (changes automatically when either draft changes)
 
-The current deployment state is **safe staging only**. Real Cloudflare Pages deployment, Turnstile creation, Resend verification, real inbox delivery, legal approval and custom-domain DNS remain unverified until the relevant account authentication or owner approval is supplied.
+The current deployment state is **safe staging only**. Cloudflare Pages and Turnstile setup are complete at the infrastructure level. Porkbun DNS, Resend verification/API configuration, real inbox delivery, legal approval and the final gated launch remain blocked on owner-controlled authentication or approval.

@@ -81,6 +81,14 @@ Cloudflare Pages settings:
 - Functions directory: repository `functions/` (outside `dist/`)
 - Production branch: `main`
 
+Current hosted state:
+
+- Pages project: `parsha-pics`
+- Safe production URL: <https://parsha-pics.pages.dev>
+- Hardened branch preview: <https://318681ca.parsha-pics.pages.dev>
+- Proposed custom hostname: `parshapics.goldypov.com` (pending the narrowly scoped Porkbun CNAME)
+- GitHub PR: <https://github.com/davidpovarsky/parsha-pics-site/pull/1>
+
 Keep the safe defaults for preview deployments. The GitHub Pages workflow is a no-index static fallback and does not execute `/api/lead`.
 
 ## Repository structure
@@ -103,10 +111,9 @@ wrangler.jsonc             Local and Pages deployment configuration
 
 ## Current launch blockers
 
-The code and safe preview build are ready. Production data collection remains disabled until the owner supplies or approves:
+The code, Cloudflare Pages Git integration, safe preview deployment and separate Preview/Production Turnstile widgets are ready. Production data collection remains disabled until the owner supplies or approves:
 
 1. explicit approval of the exact privacy and terms drafts and the decisions in the legal checklist;
 2. a verified Resend sender/domain and API key (the recipient is confirmed as `goldy@goldypov.com`);
 3. manual Lech Lecha fulfilment, or an authorised automatic-delivery package;
-4. refreshed Cloudflare authentication; and
-5. replacement of Porkbun's current wildcard parking CNAME at `parshapics.goldypov.com`, without changing the apex, `www`, nameservers or Zoho mail records.
+4. the explicit Porkbun CNAME `parshapics` → `parsha-pics.pages.dev`, without changing the apex, `www`, nameservers or Zoho mail records.
