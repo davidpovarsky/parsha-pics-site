@@ -23,14 +23,16 @@
       <div class="container">
         <header class="site-header">
           <a class="brand" href="#main" aria-label="Parsha Pics, back to top">
-            <img src="./assets/brand-logo.png" alt="Goldy POV - Parsha Pics" width="150" height="92" fetchpriority="high">
+            <img src="./assets/brand-logo.png" alt="Goldy POV" width="150" height="92" fetchpriority="high">
+            <span class="brand-subtitle">Parsha Pics</span>
           </a>
           <button class="mobile-header-cta btn btn-small" type="button" data-open="trial">Try Lech Lecha <span aria-hidden="true">&rarr;</span></button>
         </header>
         <div class="hero-layout">
           <div class="hero-copy">
             <h1 id="hero-title">Make the Parsha easier to see, follow and remember.</h1>
-            <p>Clear, classroom-ready picture sequences covering the main events of each Parsha, based on Peshat and Rashi &mdash; for teaching, review, sequencing and discussion.</p>
+            <p class="hero-desc desktop-only">Clear, classroom-ready picture sequences covering the main events of each Parsha, based on Peshat and Rashi &mdash; for teaching, review, sequencing and discussion.</p>
+            <p class="hero-desc mobile-only">Classroom-ready Parsha sequences based on Peshat and Rashi &mdash; for teaching, review and sequencing.</p>
             <button class="btn" type="button" data-open="trial">Try Lech Lecha <span aria-hidden="true">&rarr;</span></button>
             <p class="hero-audience">For KS2 / Years 3&ndash;6 teachers, schools and curriculum teams.</p>
           </div>
@@ -41,7 +43,7 @@
           </div>
         </div>
         <div class="proof-band" aria-label="Evidence and testimonial">
-          <div class="proof-stat"><span class="eyebrow">Already used by</span><strong><span class="accent">7</span> schools across UK</strong></div>
+          <div class="proof-stat"><span class="eyebrow">Already used by</span><strong><span class="accent">7</span> schools across<span class="mobile-only"> the</span> UK</strong></div>
           <div class="proof-stat"><strong><span class="accent">300+</span> full-colour illustrations</strong></div>
           <blockquote class="hero-quote"><span class="quote-mark" aria-hidden="true">&ldquo;</span><div><p>&ldquo;Your work is fabulous.&rdquo;</p><cite>M.R. &ndash; Director, The Curriculum Support Company</cite></div></blockquote>
         </div>
@@ -50,7 +52,11 @@
 
     <section class="sequence section-cream" id="see-the-parsha" aria-labelledby="sequence-heading">
       <div class="container">
-        <div class="section-intro centered"><h2 id="sequence-heading">See the Parsha unfold</h2><p>Each Parsha is broken into its key events, giving children a visual sequence they can follow, retell and remember.</p></div>
+        <div class="section-intro centered">
+          <h2 id="sequence-heading">See the Parsha unfold</h2>
+          <p class="desktop-only">Each Parsha is broken into its key events, giving children a visual sequence they can follow, retell and remember.</p>
+          <p class="mobile-only">A visual sequence children can follow, retell and remember.</p>
+        </div>
         <div class="sequence-grid">
           <figure class="sequence-card"><button type="button" class="sequence-image sequence-trigger" data-lightbox="sequence" data-index="0" aria-label="Enlarge image 1: Avraham Leaves His Homeland"><img src="./assets/lech-01.png" alt="Avraham leaving his homeland with his family" width="400" height="215" loading="lazy"><span class="number-badge">1</span><span class="enlarge-badge" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></button><figcaption>Avraham Leaves His Homeland</figcaption></figure>
           <figure class="sequence-card"><button type="button" class="sequence-image sequence-trigger" data-lightbox="sequence" data-index="1" aria-label="Enlarge image 2: Famine in the Land"><img src="./assets/lech-02.png" alt="Journey during famine" width="400" height="215" loading="lazy"><span class="number-badge">2</span><span class="enlarge-badge" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></button><figcaption>Famine in the Land</figcaption></figure>
@@ -67,33 +73,272 @@
 
     <section class="research section-blush" aria-labelledby="research-title">
       <div class="container research-grid">
+        <div class="research-header-mobile mobile-only">
+          <h2 class="research-title-mobile">Carefully researched.<br>Built to teach.</h2>
+          <p class="research-mobile-intro">Scene-by-scene research with Kodesh educator input.</p>
+        </div>
         <div class="research-scene">
-          <img src="./assets/research-war.png" alt="Detailed illustrated scene from the war of the kings" width="650" height="470" loading="lazy">
           <div class="annotation-list" aria-label="Research details shown in the illustration">
-            <div class="annotation"><span>01</span><strong>Og tells Avraham</strong><small>Bereishis 14:13, Rashi</small></div>
-            <div class="annotation"><span>02</span><strong>Four kings</strong><small>Bereishis 14:9</small></div>
-            <div class="annotation"><span>03</span><strong>Five kings</strong><small>Bereishis 14:9</small></div>
-            <div class="annotation"><span>04</span><strong>Valley of Siddim</strong><small>Bereishis 14:3, Rashi</small></div>
-            <div class="annotation"><span>05</span><strong>They lost</strong><small>Bereishis 14:10</small></div>
+            <div class="annotation" data-target="0">
+              <span class="annotation-num" aria-hidden="true">1</span>
+              <div class="annotation-text">
+                <strong>Og tells Avraham</strong>
+                <small>Bereishis 14:13, Rashi</small>
+                <p class="annotation-desc">Rashi says the fugitive was Og, the giant.</p>
+              </div>
+            </div>
+            <div class="annotation" data-target="1">
+              <span class="annotation-num" aria-hidden="true">2</span>
+              <div class="annotation-text">
+                <strong>Four kings</strong>
+                <small>Bereishis 14:9</small>
+                <p class="annotation-desc">The attacking side.</p>
+              </div>
+            </div>
+            <div class="annotation" data-target="2">
+              <span class="annotation-num" aria-hidden="true">3</span>
+              <div class="annotation-text">
+                <strong>Five kings</strong>
+                <small>Bereishis 14:9</small>
+                <p class="annotation-desc">The local kings.</p>
+              </div>
+            </div>
+            <div class="annotation" data-target="3">
+              <span class="annotation-num" aria-hidden="true">4</span>
+              <div class="annotation-text">
+                <strong>Valley of Siddim</strong>
+                <small>Bereishis 14:3, Rashi</small>
+                <p class="annotation-desc">Later called the Salt Sea.</p>
+              </div>
+            </div>
+            <div class="annotation" data-target="4">
+              <span class="annotation-num" aria-hidden="true">5</span>
+              <div class="annotation-text">
+                <strong>They lost</strong>
+                <small>Bereishis 14:10</small>
+                <p class="annotation-desc">The white flag and fallen soldier shows the losing side.</p>
+              </div>
+            </div>
+          </div>
+          <div class="research-art-wrapper">
+            <img src="./assets/research-war.png" alt="Detailed illustrated scene from the war of the kings" width="650" height="470" loading="lazy">
+            <div class="research-mobile-markers" aria-hidden="true">
+              <span class="research-marker" style="left: 29%; top: 22%;">1</span>
+              <span class="research-marker" style="left: 21%; top: 63%;">2</span>
+              <span class="research-marker" style="left: 80%; top: 46%;">3</span>
+              <span class="research-marker" style="left: 41%; top: 64%;">4</span>
+              <span class="research-marker" style="left: 72%; top: 78%;">5</span>
+            </div>
+          </div>
+          <svg class="research-leaders" aria-hidden="true"></svg>
+        </div>
+        <div class="research-copy desktop-only">
+          <h2 id="research-title">Carefully researched.<br>Built to teach.</h2>
+          <div class="research-point">
+            <strong>Based primarily on Peshat &amp; Rashi</strong>
+            <p>Researched scene by scene.</p>
+          </div>
+          <div class="research-point">
+            <strong>Developed with Kodesh educators</strong>
+            <p>With input from a curriculum developer and a Head of Kodesh.</p>
           </div>
         </div>
-        <div class="research-copy"><h2 id="research-title">Carefully researched.<br>Built to teach.</h2><div class="research-point"><strong>Based primarily on Peshat &amp; Rashi</strong><p>Researched scene by scene.</p></div><div class="research-point"><strong>Developed with Kodesh educators</strong><p>With input from a curriculum developer and a Head of Kodesh.</p></div></div>
       </div>
     </section>
 
-    <section class="trial-band section-warm" aria-labelledby="try-heading"><div class="container trial-layout"><h2 id="try-heading">Try the full Lech Lecha sequence with your class.</h2><div><p>Download the complete high-resolution Lech Lecha sequence instantly and see how it works with your pupils.</p><div class="trial-actions"><button type="button" class="btn" data-open="trial">Try Lech Lecha <span aria-hidden="true">&rarr;</span></button><small>Instant download: titled PDF + individual high-resolution JPGs. The Parsha Pics team will follow up by email.</small></div></div></div></section>
+    <section class="trial-band section-warm" aria-labelledby="try-heading">
+      <div class="container trial-layout">
+        <h2 id="try-heading">
+          <span class="desktop-only">Try the full Lech Lecha sequence with your class.</span>
+          <span class="mobile-only">Try Lech Lecha with your class.</span>
+        </h2>
+        <div>
+          <p class="desktop-only">Download the complete high-resolution Lech Lecha sequence instantly and see how it works with your pupils.</p>
+          <p class="mobile-only">Full-resolution and classroom-ready. Download the complete Lech Lecha sequence instantly to try with your pupils.</p>
+          <div class="trial-actions">
+            <button type="button" class="btn" data-open="trial">Try Lech Lecha <span aria-hidden="true">&rarr;</span></button>
+            <small>Instant download: titled PDF + individual high-resolution JPGs. The Parsha Pics team will follow up by email.</small>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <section class="worksheets section-cream" aria-labelledby="worksheets-title"><div class="container worksheet-grid"><div class="worksheet-copy"><h2 id="worksheets-title">Editable worksheet templates, ready to customise.</h2><p>Included Canva templates for Years 3&ndash;6 give teachers a simple starting point for creating their own Parsha worksheets.</p><p class="worksheet-note">Use the high-resolution pictures in your own worksheets and resources too.</p></div><div class="worksheet-photos"><figure><figcaption>Year 3</figcaption><img src="./assets/worksheet-3.png" alt="Year 3 sample Parsha worksheet" width="185" height="281" loading="lazy"></figure><figure><figcaption>Year 4</figcaption><img src="./assets/worksheet-4.png" alt="Year 4 sample Parsha worksheet" width="185" height="281" loading="lazy"></figure><figure><figcaption>Year 5</figcaption><img src="./assets/worksheet-5.png" alt="Year 5 sample Parsha worksheet" width="185" height="281" loading="lazy"></figure><figure><figcaption>Year 6</figcaption><img src="./assets/worksheet-6.png" alt="Year 6 sample Parsha worksheet" width="185" height="281" loading="lazy"></figure></div></div></section>
+    <section class="worksheets section-cream" aria-labelledby="worksheets-title">
+      <div class="container worksheet-grid">
+        <div class="worksheet-copy">
+          <h2 id="worksheets-title">
+            <span class="desktop-only">Editable worksheet templates, ready to customise.</span>
+            <span class="mobile-only">Editable worksheets, ready to customise.</span>
+          </h2>
+          <p class="desktop-only">Included Canva templates for Years 3&ndash;6 give teachers a simple starting point for creating their own Parsha worksheets.</p>
+          <p class="mobile-only">Editable Canva templates for Years 3&ndash;6.</p>
+          <p class="worksheet-note">Use the high-resolution pictures in your own worksheets and resources too.</p>
+        </div>
+        <div class="worksheet-photos">
+          <figure><figcaption>Year 3</figcaption><img src="./assets/worksheet-3.png" alt="Year 3 sample Parsha worksheet" width="185" height="281" loading="lazy"></figure>
+          <figure><figcaption>Year 4</figcaption><img src="./assets/worksheet-4.png" alt="Year 4 sample Parsha worksheet" width="185" height="281" loading="lazy"></figure>
+          <figure><figcaption>Year 5</figcaption><img src="./assets/worksheet-5.png" alt="Year 5 sample Parsha worksheet" width="185" height="281" loading="lazy"></figure>
+          <figure><figcaption>Year 6</figcaption><img src="./assets/worksheet-6.png" alt="Year 6 sample Parsha worksheet" width="185" height="281" loading="lazy"></figure>
+        </div>
+      </div>
+    </section>
 
-    <section class="testimonials section-red" aria-labelledby="testimonials-heading"><img class="wave-top" src="./assets/transition-to-red.svg" alt="" aria-hidden="true"><div class="container"><h2 id="testimonials-heading">What teachers, pupils &amp; parents say</h2><div class="testimonial-grid"><blockquote><span aria-hidden="true">&ldquo;</span><p>When we had the illustrations in primary school, the Parsha really came alive. It was much easier to picture and understand what was happening.</p><cite>D.L. &ndash; Tiferes High School, London</cite></blockquote><blockquote><span aria-hidden="true">&ldquo;</span><p>The children are completely engaged. It makes teaching Parsha so much easier.</p><cite>T.S. &ndash; Teacher, Keser Girls School, Gateshead</cite></blockquote><blockquote><span aria-hidden="true">&ldquo;</span><p>We really value the detail in the illustrations, especially the way they reflect Chazal's comments and the pshat.</p><cite>Z.C. &ndash; Chinuch BY Design, London</cite></blockquote><blockquote><span aria-hidden="true">&ldquo;</span><p>They've really enhanced our Shabbos table. The whole family gets involved, noticing the details and checking them against the pshat and Chazal.</p><cite>E.K. &ndash; Parent, London</cite></blockquote><blockquote><span aria-hidden="true">&ldquo;</span><p>Each week, one pupil gets to take the illustrations home in full-colour A3. It's become something the children really look forward to.</p><cite>S.M. &ndash; Teacher, Yesodey Hatorah School, London</cite></blockquote><blockquote><span aria-hidden="true">&ldquo;</span><p>The pictures are so vivid and beautiful. I used them every night to tell the Parsha to my son, who has Down syndrome &mdash; he absolutely loved them.</p><cite>M.W. &ndash; Mother, New York</cite></blockquote></div></div><img class="wave-bottom" src="./assets/transition-from-red.svg" alt="" aria-hidden="true"></section>
+    <section class="testimonials section-red" aria-labelledby="testimonials-heading">
+      <img class="wave-top" src="./assets/transition-to-red.svg" alt="" aria-hidden="true">
+      <div class="container">
+        <h2 id="testimonials-heading">What teachers, pupils &amp; parents say</h2>
+        <div class="testimonial-grid">
+          <blockquote>
+            <span aria-hidden="true">&ldquo;</span>
+            <p>When we had the illustrations in primary school, <strong>the Parsha really came alive</strong>. It was much easier to picture and understand what was happening.</p>
+            <cite>D.L. &ndash; Tiferes High School, London</cite>
+          </blockquote>
+          <blockquote>
+            <span aria-hidden="true">&ldquo;</span>
+            <p>The children are <strong>completely engaged</strong>. It makes teaching Parsha so much easier.</p>
+            <cite>T.S. &ndash; Teacher, Keser Girls School, Gateshead</cite>
+          </blockquote>
+          <blockquote>
+            <span aria-hidden="true">&ldquo;</span>
+            <p>We really value the detail in the illustrations, especially the way they <strong>reflect Chazal's comments and the pshat</strong>.</p>
+            <cite>Z.C. &ndash; Chinuch BY Design, London</cite>
+          </blockquote>
+          <blockquote>
+            <span aria-hidden="true">&ldquo;</span>
+            <p>They've really enhanced our Shabbos table. <strong>The whole family gets involved</strong>, noticing the details and checking them against the pshat and Chazal.</p>
+            <cite>E.K. &ndash; Parent, London</cite>
+          </blockquote>
+          <blockquote>
+            <span aria-hidden="true">&ldquo;</span>
+            <p>Each week, one pupil gets to take the illustrations home in full-colour A3. It's become something the children <strong>really look forward to</strong>.</p>
+            <cite>S.M. &ndash; Teacher, Yesodey Hatorah School, London</cite>
+          </blockquote>
+          <blockquote>
+            <span aria-hidden="true">&ldquo;</span>
+            <p>The pictures are so vivid and beautiful. I used them every night to tell the Parsha to my son, who has Down syndrome &mdash; <strong>he absolutely loved them.</strong></p>
+            <cite>M.W. &ndash; Mother, New York</cite>
+          </blockquote>
+        </div>
+        <div class="swipe-hint" aria-hidden="true">Swipe for more &rarr;</div>
+      </div>
+      <img class="wave-bottom" src="./assets/transition-from-red.svg" alt="" aria-hidden="true">
+    </section>
 
-    <section class="collection section-cream" aria-labelledby="collection-title"><div class="container"><div class="section-intro left"><h2 id="collection-title">And that's just one Parsha.</h2><p>The complete collection covers the weekly Parshiyos across all five Sefarim. These are just a few more examples from the wider library.</p></div><div class="collection-grid"><article class="collection-card"><div class="collection-meta"><small>BEREISHIS</small><h3>Vayeishev</h3></div><button type="button" class="collection-main-trigger" data-lightbox="vayeishev" data-index="0" aria-label="Enlarge Vayeishev scene 1 of 4"><img class="collection-main" src="./assets/collection-vayeishev.jpg" alt="Vayeishev Parsha picture" width="386" height="284" loading="lazy"><span class="enlarge-badge" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></button><div class="collection-thumbs"><button type="button" class="collection-thumb-trigger" data-lightbox="vayeishev" data-index="1" aria-label="Enlarge Vayeishev scene 2 of 4"><img src="./assets/vayeishev-1.jpg" alt="Vayeishev additional scene" loading="lazy"></button><button type="button" class="collection-thumb-trigger" data-lightbox="vayeishev" data-index="2" aria-label="Enlarge Vayeishev scene 3 of 4"><img src="./assets/vayeishev-2.jpg" alt="Vayeishev additional scene" loading="lazy"></button><button type="button" class="collection-thumb-trigger" data-lightbox="vayeishev" data-index="3" aria-label="Enlarge Vayeishev scene 4 of 4"><img src="./assets/vayeishev-3.jpg" alt="Vayeishev additional scene" loading="lazy"></button></div></article><article class="collection-card"><div class="collection-meta"><small>SHEMOS</small><h3>Mishpatim</h3></div><button type="button" class="collection-main-trigger" data-lightbox="mishpatim" data-index="0" aria-label="Enlarge Mishpatim scene 1 of 4"><img class="collection-main" src="./assets/collection-mishpatim.png" alt="Mishpatim Parsha picture" width="386" height="284" loading="lazy"><span class="enlarge-badge" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></button><div class="collection-thumbs"><button type="button" class="collection-thumb-trigger" data-lightbox="mishpatim" data-index="1" aria-label="Enlarge Mishpatim scene 2 of 4"><img src="./assets/mishpatim-1.png" alt="Mishpatim additional scene" loading="lazy"></button><button type="button" class="collection-thumb-trigger" data-lightbox="mishpatim" data-index="2" aria-label="Enlarge Mishpatim scene 3 of 4"><img src="./assets/mishpatim-2.png" alt="Mishpatim additional scene" loading="lazy"></button><button type="button" class="collection-thumb-trigger" data-lightbox="mishpatim" data-index="3" aria-label="Enlarge Mishpatim scene 4 of 4"><img src="./assets/mishpatim-3.png" alt="Mishpatim additional scene" loading="lazy"></button></div></article><article class="collection-card"><div class="collection-meta"><small>VAYIKRA</small><h3>Kedoshim</h3></div><button type="button" class="collection-main-trigger" data-lightbox="kedoshim" data-index="0" aria-label="Enlarge Kedoshim scene 1 of 4"><img class="collection-main" src="./assets/collection-kedoshim.jpg" alt="Kedoshim Parsha picture" width="386" height="284" loading="lazy"><span class="enlarge-badge" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span></button><div class="collection-thumbs"><button type="button" class="collection-thumb-trigger" data-lightbox="kedoshim" data-index="1" aria-label="Enlarge Kedoshim scene 2 of 4"><img src="./assets/kedoshim-1.jpg" alt="Kedoshim additional scene" loading="lazy"></button><button type="button" class="collection-thumb-trigger" data-lightbox="kedoshim" data-index="2" aria-label="Enlarge Kedoshim scene 3 of 4"><img src="./assets/kedoshim-2.jpg" alt="Kedoshim additional scene" loading="lazy"></button><button type="button" class="collection-thumb-trigger" data-lightbox="kedoshim" data-index="3" aria-label="Enlarge Kedoshim scene 4 of 4"><img src="./assets/kedoshim-3.jpg" alt="Kedoshim additional scene" loading="lazy"></button></div></article></div></div></section>
+    <section class="collection section-cream" aria-labelledby="collection-title">
+      <div class="container">
+        <div class="section-intro left">
+          <h2 id="collection-title">And that's just one Parsha.</h2>
+          <p class="desktop-only">The complete collection covers the weekly Parshiyos across all five Sefarim. These are just a few more examples from the wider library.</p>
+          <p class="mobile-only">More examples from the wider collection.</p>
+        </div>
+        <div class="collection-grid">
+          <article class="collection-card">
+            <div class="collection-meta"><small>BEREISHIS</small><h3>Vayeishev</h3></div>
+            <button type="button" class="collection-main-trigger" data-lightbox="vayeishev" data-index="0" aria-label="Enlarge Vayeishev scene 1 of 4">
+              <img class="collection-main" src="./assets/collection-vayeishev.jpg" alt="Vayeishev Parsha picture" width="386" height="284" loading="lazy">
+              <span class="enlarge-badge" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
+            </button>
+            <div class="collection-thumbs">
+              <button type="button" class="collection-thumb-trigger" data-lightbox="vayeishev" data-index="1" aria-label="Enlarge Vayeishev scene 2 of 4"><img src="./assets/vayeishev-1.jpg" alt="Vayeishev additional scene" loading="lazy"></button>
+              <button type="button" class="collection-thumb-trigger" data-lightbox="vayeishev" data-index="2" aria-label="Enlarge Vayeishev scene 3 of 4"><img src="./assets/vayeishev-2.jpg" alt="Vayeishev additional scene" loading="lazy"></button>
+              <button type="button" class="collection-thumb-trigger" data-lightbox="vayeishev" data-index="3" aria-label="Enlarge Vayeishev scene 4 of 4"><img src="./assets/vayeishev-3.jpg" alt="Vayeishev additional scene" loading="lazy"></button>
+            </div>
+          </article>
+          <article class="collection-card">
+            <div class="collection-meta"><small>SHEMOS</small><h3>Mishpatim</h3></div>
+            <button type="button" class="collection-main-trigger" data-lightbox="mishpatim" data-index="0" aria-label="Enlarge Mishpatim scene 1 of 4">
+              <img class="collection-main" src="./assets/collection-mishpatim.png" alt="Mishpatim Parsha picture" width="386" height="284" loading="lazy">
+              <span class="enlarge-badge" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
+            </button>
+            <div class="collection-thumbs">
+              <button type="button" class="collection-thumb-trigger" data-lightbox="mishpatim" data-index="1" aria-label="Enlarge Mishpatim scene 2 of 4"><img src="./assets/mishpatim-1.png" alt="Mishpatim additional scene" loading="lazy"></button>
+              <button type="button" class="collection-thumb-trigger" data-lightbox="mishpatim" data-index="2" aria-label="Enlarge Mishpatim scene 3 of 4"><img src="./assets/mishpatim-2.png" alt="Mishpatim additional scene" loading="lazy"></button>
+              <button type="button" class="collection-thumb-trigger" data-lightbox="mishpatim" data-index="3" aria-label="Enlarge Mishpatim scene 4 of 4"><img src="./assets/mishpatim-3.png" alt="Mishpatim additional scene" loading="lazy"></button>
+            </div>
+          </article>
+          <article class="collection-card">
+            <div class="collection-meta"><small>VAYIKRA</small><h3>Kedoshim</h3></div>
+            <button type="button" class="collection-main-trigger" data-lightbox="kedoshim" data-index="0" aria-label="Enlarge Kedoshim scene 1 of 4">
+              <img class="collection-main" src="./assets/collection-kedoshim.jpg" alt="Kedoshim Parsha picture" width="386" height="284" loading="lazy">
+              <span class="enlarge-badge" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></span>
+            </button>
+            <div class="collection-thumbs">
+              <button type="button" class="collection-thumb-trigger" data-lightbox="kedoshim" data-index="1" aria-label="Enlarge Kedoshim scene 2 of 4"><img src="./assets/kedoshim-1.jpg" alt="Kedoshim additional scene" loading="lazy"></button>
+              <button type="button" class="collection-thumb-trigger" data-lightbox="kedoshim" data-index="2" aria-label="Enlarge Kedoshim scene 3 of 4"><img src="./assets/kedoshim-2.jpg" alt="Kedoshim additional scene" loading="lazy"></button>
+              <button type="button" class="collection-thumb-trigger" data-lightbox="kedoshim" data-index="3" aria-label="Enlarge Kedoshim scene 4 of 4"><img src="./assets/kedoshim-3.jpg" alt="Kedoshim additional scene" loading="lazy"></button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-    <section class="included section-blush" aria-labelledby="included-title"><div class="container included-grid"><div class="included-copy"><h2 id="included-title">What you get with Parsha Pics</h2><p>A practical, reusable picture library designed to fit the way you already teach.</p><div class="feature-grid"><div class="feature"><img src="./assets/feature-1.png" alt="" width="54" height="54" loading="lazy"><div><h3>High-resolution pictures</h3><p>Full-page titled PDFs + individual JPGs.</p></div></div><div class="feature"><img src="./assets/feature-2.png" alt="" width="54" height="54" loading="lazy"><div><h3>Clearly organised</h3><p>By Parsha and Sefer.</p></div></div><div class="feature"><img src="./assets/feature-3.png" alt="" width="54" height="54" loading="lazy"><div><h3>Editable Canva templates</h3><p>Flexible templates for Years 3&ndash;6.</p></div></div><div class="feature"><img src="./assets/feature-4.png" alt="" width="54" height="54" loading="lazy"><div><h3>School-use licence</h3><p>Use across your school's teaching resources.</p></div></div></div></div><aside class="licensing" aria-labelledby="licensing-title"><h2 id="licensing-title">Choose your collection</h2><div class="licensing-options"><div><img src="./assets/option-1.png" alt="" width="44" height="44"><p><strong>One Sefer</strong><span>Start with the Sefer you need.</span></p></div><div><img src="./assets/option-2.png" alt="" width="44" height="44"><p><strong>Multiple Sefarim</strong><span>Build a collection around your curriculum.</span></p></div><div><img src="./assets/option-3.png" alt="" width="44" height="44"><p><strong>Complete collection</strong><span>Access the full Parsha library.</span></p></div></div><div class="licensing-cta"><button type="button" class="btn btn-inverted" data-open="pricing">Request school pricing <span aria-hidden="true">&rarr;</span></button><button type="button" class="text-link" data-open="trial">Prefer to try it first?<br>Try Lech Lecha <span aria-hidden="true">&rarr;</span></button></div></aside></div></section>
+    <section class="included section-blush" aria-labelledby="included-title">
+      <div class="container included-grid">
+        <div class="included-copy">
+          <h2 id="included-title">
+            <span class="desktop-only">What you get with Parsha Pics</span>
+            <span class="mobile-only">What you get</span>
+          </h2>
+          <p class="desktop-only">A practical, reusable picture library designed to fit the way you already teach.</p>
+          <p class="mobile-only">A reusable picture library built for classroom teaching.</p>
+          <div class="feature-grid">
+            <div class="feature"><img src="./assets/feature-1.png" alt="" width="54" height="54" loading="lazy"><div><h3>High-resolution pictures</h3><p>Full-page titled PDFs + individual JPGs.</p></div></div>
+            <div class="feature"><img src="./assets/feature-2.png" alt="" width="54" height="54" loading="lazy"><div><h3>Clearly organised</h3><p>By Parsha and Sefer.</p></div></div>
+            <div class="feature"><img src="./assets/feature-3.png" alt="" width="54" height="54" loading="lazy"><div><h3>Editable Canva templates</h3><p>Flexible templates for Years 3&ndash;6.</p></div></div>
+            <div class="feature"><img src="./assets/feature-4.png" alt="" width="54" height="54" loading="lazy"><div><h3>School-use licence</h3><p>Use across your school's teaching resources.</p></div></div>
+          </div>
+        </div>
+        <aside class="licensing" aria-labelledby="licensing-title">
+          <h2 id="licensing-title">Choose your collection</h2>
+          <div class="licensing-options">
+            <div><img src="./assets/option-1.png" alt="" width="44" height="44"><p><strong>One Sefer</strong><span>Start with the Sefer you need.</span></p></div>
+            <div><img src="./assets/option-2.png" alt="" width="44" height="44"><p><strong>Multiple Sefarim</strong><span>Build a collection around your curriculum.</span></p></div>
+            <div><img src="./assets/option-3.png" alt="" width="44" height="44"><p><strong>Complete collection</strong><span>Access the full Parsha library.</span></p></div>
+          </div>
+          <div class="licensing-cta">
+            <button type="button" class="btn btn-inverted" data-open="pricing">Request school pricing <span aria-hidden="true">&rarr;</span></button>
+            <button type="button" class="text-link" data-open="trial">Prefer to try it first?<br>Try Lech Lecha <span aria-hidden="true">&rarr;</span></button>
+          </div>
+        </aside>
+      </div>
+    </section>
 
-    <section class="faq section-cream" aria-labelledby="faq-heading"><div class="container"><div class="section-intro centered"><h2 id="faq-heading">Frequently asked questions</h2><p>Practical details about using, adapting and licensing the resource.</p></div><div class="faq-list"><details><summary>What ages is Parsha Pics suitable for?<span class="faq-icon" aria-hidden="true"><span class="faq-icon-plus">+</span><span class="faq-icon-minus">&#x2212;</span></span></summary><p>Parsha Pics is designed primarily for Years 3&ndash;6 / KS2, but the same picture sequences can also be used with younger or older pupils by adapting the activity and level of discussion.</p></details><details><summary>What are the illustrations based on?<span class="faq-icon" aria-hidden="true"><span class="faq-icon-plus">+</span><span class="faq-icon-minus">&#x2212;</span></span></summary><p>The illustrations are based primarily on Peshat and Rashi, with scenes carefully researched and reviewed with Kodesh educators.</p></details><details><summary>How many pictures are there per Parsha?<span class="faq-icon" aria-hidden="true"><span class="faq-icon-plus">+</span><span class="faq-icon-minus">&#x2212;</span></span></summary><p>Each Parsha is divided into its key events. The number of illustrations varies with the story; Lech Lecha is shown here as a nine-picture sequence.</p></details><details><summary>Can we adapt the worksheets?<span class="faq-icon" aria-hidden="true"><span class="faq-icon-plus">+</span><span class="faq-icon-minus">&#x2212;</span></span></summary><p>Yes. The Canva templates are editable, and the individual high-resolution pictures can be used in your own teaching materials within your licence.</p></details><details><summary>Can we purchase only one Sefer?<span class="faq-icon" aria-hidden="true"><span class="faq-icon-plus">+</span><span class="faq-icon-minus">&#x2212;</span></span></summary><p>Yes. You can request pricing for one Sefer, several Sefarim or the complete collection.</p></details><details><summary>What can our school use the illustrations for?<span class="faq-icon" aria-hidden="true"><span class="faq-icon-plus">+</span><span class="faq-icon-minus">&#x2212;</span></span></summary><p>The picture sequences can support classroom presentation, review, sequencing, discussion and worksheets. Specific permitted uses depend on your school licence.</p></details></div></div></section>
+    <section class="faq section-cream" aria-labelledby="faq-heading">
+      <div class="container">
+        <div class="section-intro centered">
+          <h2 id="faq-heading">Frequently asked questions</h2>
+          <p class="desktop-only">Practical details about using, adapting and licensing the resource.</p>
+          <p class="mobile-only">Practical details about using and licensing the resource.</p>
+        </div>
+        <div class="faq-list">
+          <details><summary>What ages is Parsha Pics suitable for?<span class="faq-icon" aria-hidden="true"><span class="faq-icon-plus">+</span><span class="faq-icon-minus">&#x2212;</span></span></summary><p>Parsha Pics is designed primarily for Years 3&ndash;6 / KS2, but the same picture sequences can also be used with younger or older pupils by adapting the activity and level of discussion.</p></details>
+          <details><summary>What are the illustrations based on?<span class="faq-icon" aria-hidden="true"><span class="faq-icon-plus">+</span><span class="faq-icon-minus">&#x2212;</span></span></summary><p>The illustrations are based primarily on Peshat and Rashi, with scenes carefully researched and reviewed with Kodesh educators.</p></details>
+          <details><summary>How many pictures are there per Parsha?<span class="faq-icon" aria-hidden="true"><span class="faq-icon-plus">+</span><span class="faq-icon-minus">&#x2212;</span></span></summary><p>Each Parsha is divided into its key events. The number of illustrations varies with the story; Lech Lecha is shown here as a nine-picture sequence.</p></details>
+          <details><summary>Can we adapt the worksheets?<span class="faq-icon" aria-hidden="true"><span class="faq-icon-plus">+</span><span class="faq-icon-minus">&#x2212;</span></span></summary><p>Yes. The Canva templates are editable, and the individual high-resolution pictures can be used in your own teaching materials within your licence.</p></details>
+          <details><summary>Can we purchase only one Sefer?<span class="faq-icon" aria-hidden="true"><span class="faq-icon-plus">+</span><span class="faq-icon-minus">&#x2212;</span></span></summary><p>Yes. You can request pricing for one Sefer, several Sefarim or the complete collection.</p></details>
+          <details><summary>What can our school use the illustrations for?<span class="faq-icon" aria-hidden="true"><span class="faq-icon-plus">+</span><span class="faq-icon-minus">&#x2212;</span></span></summary><p>The picture sequences can support classroom presentation, review, sequencing, discussion and worksheets. Specific permitted uses depend on your school licence.</p></details>
+        </div>
+      </div>
+    </section>
 
-    <section class="closing" aria-labelledby="closing-title"><div class="closing-art"><img src="./assets/final-art.png" alt="Illustrated Biblical scene from Parsha" width="520" height="350" loading="lazy"></div><div class="closing-copy"><h2 id="closing-title">Help your pupils see the Parsha, follow the story and remember what they learn.</h2><div class="closing-actions"><button type="button" class="btn" data-open="trial">Try Lech Lecha <span aria-hidden="true">&rarr;</span></button><button type="button" class="btn btn-outline" data-open="pricing">Request school pricing <span aria-hidden="true">&rarr;</span></button></div></div></section>
+    <section class="closing" aria-labelledby="closing-title">
+      <div class="closing-art">
+        <img src="./assets/final-art.png" alt="Illustrated Biblical scene from Parsha" width="520" height="350" loading="lazy">
+      </div>
+      <div class="closing-copy">
+        <h2 id="closing-title">
+          <span class="desktop-only">Help your pupils see the Parsha, follow the story and remember what they learn.</span>
+          <span class="mobile-only">Help your pupils see, follow and remember the Parsha.</span>
+        </h2>
+        <div class="closing-actions">
+          <button type="button" class="btn" data-open="trial">Try Lech Lecha <span aria-hidden="true">&rarr;</span></button>
+          <button type="button" class="btn btn-outline" data-open="pricing">
+            <span class="desktop-only">Request school pricing <span aria-hidden="true">&rarr;</span></span>
+            <span class="mobile-only">Request pricing <span aria-hidden="true">&rarr;</span></span>
+          </button>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer section-warm"><div class="container footer-layout"><div class="footer-brand"><img src="./assets/brand-logo.png" alt="Goldy POV logo" width="94" height="58" loading="lazy"><div><strong>Parsha Pics by Goldy Povarsky</strong><small>&copy; 2026 Goldy Povarsky</small></div></div><nav aria-label="Footer"><button type="button" data-open="contact">Contact</button><span aria-hidden="true">&middot;</span><a href="./terms.html">Terms</a><span aria-hidden="true">&middot;</span><a href="./privacy.html">Privacy</a></nav></div></footer>
