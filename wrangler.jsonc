@@ -2,5 +2,33 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "parsha-pics",
   "compatibility_date": "2026-10-06",
-  "pages_build_output_dir": "dist"
+  "pages_build_output_dir": "dist",
+  "env": {
+    "production": {
+      "vars": {
+        "APPROVED_LEGAL": "false",
+        "LEGAL_APPROVAL_ID": "484331c963b5",
+        "LEAD_CAPTURE_ENABLED": "false",
+        "PUBLIC_LAUNCH": "false",
+        "PUBLIC_ORIGIN": "https://parshapics.goldypov.com",
+        "TURNSTILE_SITE_KEY": "0x4AAAAAAFWFxDsA88ersqg4",
+        "TURNSTILE_ALLOWED_HOSTNAMES": "parshapics.goldypov.com",
+        "FROM_EMAIL": "Parsha Pics <forms@send.goldypov.com>",
+        "CONTACT_EMAIL": "goldy@goldypov.com"
+      }
+    },
+    "preview": {
+      "vars": {
+        "APPROVED_LEGAL": "false",
+        "LEGAL_APPROVAL_ID": "484331c963b5",
+        "LEAD_CAPTURE_ENABLED": "false",
+        "PUBLIC_LAUNCH": "false",
+        "PUBLIC_ORIGIN": "https://agent-cloudflare-production.parsha-pics.pages.dev",
+        "TURNSTILE_SITE_KEY": "0x4AAAAAAFWFvcch8EzeYU81",
+        "TURNSTILE_ALLOWED_HOSTNAMES": "agent-cloudflare-production.parsha-pics.pages.dev",
+        "FROM_EMAIL": "Parsha Pics <forms@send.goldypov.com>",
+        "CONTACT_EMAIL": "goldy@goldypov.com"
+      }
+    }
+  }
 }
