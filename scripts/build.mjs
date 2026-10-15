@@ -81,6 +81,9 @@ if (!approvedLegal) html = html.replaceAll('./terms.html', './legal-pending.html
 await writeFile(join(dist, 'index.html'), html);
 await writeFile(join(dist, 'styles.css'), transformAssets(await readFile(join(root, 'styles.css'), 'utf8')));
 await cp(join(root, 'script.js'), join(dist, 'script.js'));
+for (const icon of ['favicon.ico', 'favicon.png', 'apple-touch-icon.png']) {
+  await cp(join(root, icon), join(dist, icon));
+}
 
 if (approvedLegal) {
   for (const [index, name] of ['privacy.html', 'terms.html'].entries()) {
