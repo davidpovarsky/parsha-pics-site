@@ -56,7 +56,7 @@ span.desktop-only { display: inline; }
 .hero { min-height: 840px; padding-bottom: 54px; }
 .site-header { height: 158px; display: flex; align-items: flex-start; justify-content: space-between; padding-top: 36px; }
 .site-header .brand { display: flex; flex-direction: column; align-items: flex-start; text-decoration: none; }
-.site-header .brand img { width: 150px; height: auto; max-height: 103px; object-fit: contain; object-position: left top; }
+.site-header .brand img { width: 150px; height: auto; max-height: 103px; object-fit: contain; object-position: left top; margin-left: -11px; max-width: none; }
 .brand-subtitle { font-family: var(--heading); font-size: 1.12rem; font-weight: 700; color: var(--red); line-height: 1.1; letter-spacing: -.02em; margin-top: -2px; }
 .hero-layout { display: grid; grid-template-columns: minmax(0, .94fr) minmax(0, 1.1fr); gap: 6%; min-height: 492px; }
 .hero-copy { padding-top: 31px; max-width: 590px; }
@@ -451,7 +451,7 @@ span.desktop-only { display: inline; }
   .container { width: min(calc(100% - 32px), 530px); }
   .hero { min-height: auto; padding-bottom: 28px; }
   .site-header { height: 103px; padding-top: 14px; align-items: flex-start; }
-  .site-header .brand img { width: 94px; max-height: 65px; }
+  .site-header .brand img { width: 94px; max-height: 65px; margin-left: -7px; max-width: none; }
   .mobile-header-cta { display: none; }
   .hero-layout { display: flex; flex-direction: column; gap: 30px; }
   .hero-copy { padding-top: 0; }
