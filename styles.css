@@ -346,12 +346,20 @@ span.desktop-only { display: inline; }
 .faq-list summary .faq-icon img {
   width: 36px;
   height: 36px;
+  flex: none;
+}
+.faq-list summary .faq-icon img.faq-icon-minus {
+  display: none;
+}
+.faq-list summary .faq-icon img.faq-icon-plus {
   display: block;
 }
-.faq-list summary .faq-icon-minus { display: none; }
-.faq-list summary .faq-icon-plus { display: block; }
-.faq-list details[open] summary .faq-icon-minus { display: block; }
-.faq-list details[open] summary .faq-icon-plus { display: none; }
+.faq-list details[open] summary .faq-icon img.faq-icon-minus {
+  display: block;
+}
+.faq-list details[open] summary .faq-icon img.faq-icon-plus {
+  display: none;
+}
 .faq-list details p { max-width: 800px; padding: 0 46px 22px 4px; color: var(--muted); font-size: .96rem; }
 .closing { display: grid; grid-template-columns: 36% 64%; background: #efe4d2; min-height: 350px; }
 .closing-art { height: 350px; overflow: hidden; }
@@ -560,10 +568,6 @@ span.desktop-only { display: inline; }
     width: 32px;
     height: 32px;
   }
-  .faq-list summary .faq-icon-plus { display: block; }
-  .faq-list summary .faq-icon-minus { display: none; }
-  .faq-list details[open] summary .faq-icon-plus { display: none; }
-  .faq-list details[open] summary .faq-icon-minus { display: block; }
   .faq-list details p { padding: 0 16px 18px 0; font-size: .88rem; line-height: 1.5; }
   .closing { display: flex; flex-direction: column; }
   .closing-art { height: auto; aspect-ratio: 390/263; }

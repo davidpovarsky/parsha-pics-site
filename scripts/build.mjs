@@ -51,8 +51,17 @@ for (const asset of manifest.assets) {
 }
 
 for (const [from, to] of replacement) {
-  const info = await stat(join(dist, 'assets', to));
-  if (!info.isFile() || info.size === 0) throw new Error(`Asset verification failed for: ${to}`);
+  const targetPath = join(dist, 'assets', to);
+  let info = null;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      info = await stat(targetPath);
+      if (info.isFile() && info.size > 0) break;
+    } catch {
+      await new Promise((r) => setTimeout(r, 150));
+    }
+  }
+  if (!info || !info.isFile() || info.size === 0) throw new Error(`Asset verification failed for: ${to}`);
 }
 
 const transformAssets = (text) => {
