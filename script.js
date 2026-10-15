@@ -341,11 +341,11 @@
     if (!scene || !svg || !img || cards.length !== 5) return;
 
     const targets = [
-      [0.29, 0.22], // 1: Og tells Avraham
-      [0.21, 0.63], // 2: Four kings
-      [0.80, 0.46], // 3: Five kings
-      [0.41, 0.64], // 4: Valley of Siddim
-      [0.72, 0.78]  // 5: They lost
+      [0.415, 0.219], // 1: Og tells Avraham
+      [0.231, 0.485], // 2: Four kings
+      [0.757, 0.502], // 3: Five kings
+      [0.426, 0.613], // 4: Valley of Siddim
+      [0.705, 0.732]  // 5: They lost
     ];
 
     const updateLeaders = () => {

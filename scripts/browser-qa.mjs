@@ -38,10 +38,10 @@ let browser;
 try {
   await waitForServer;
   browser = await chromium.launch({ headless: true });
-  const widths = [360, 390, 768, 1024, 1440, 1920];
+  const widths = [360, 390, 414, 768, 1024, 1440, 1920];
   await mkdir(join(root, 'screenshots'), { recursive: true });
   for (const width of widths) {
-    const page = await browser.newPage({ viewport: { width, height: width <= 390 ? 844 : 900 }, deviceScaleFactor: 1 });
+    const page = await browser.newPage({ viewport: { width, height: width <= 414 ? 844 : 900 }, deviceScaleFactor: 1 });
     await installTurnstileStub(page);
     const errors = [];
     page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
@@ -69,6 +69,170 @@ try {
     const threeHundredAccent = page.locator('.proof-stat').nth(1).locator('.accent');
     const threeHundredColor = await threeHundredAccent.evaluate((el) => window.getComputedStyle(el).color);
     assert.equal(sevenColor, threeHundredColor, 'Accent colors for 7 and 300+ must match exactly');
+
+    if (width <= 760) {
+      // Mobile-only content assertions
+      const mobileElements = [
+        { name: 'Hero mobile description', locator: page.locator('.hero-desc.mobile-only') },
+        { name: 'Sequence mobile intro', locator: page.locator('.sequence .section-intro p.mobile-only') },
+        { name: 'Research mobile heading', locator: page.locator('.research-mobile-header h2') },
+        { name: 'Research mobile bold statement', locator: page.locator('.research-mobile-bold') },
+        { name: 'Research mobile intro', locator: page.locator('.research-mobile-intro') },
+        { name: 'Trial mobile heading', locator: page.locator('#try-heading .mobile-only') },
+        { name: 'Trial mobile description', locator: page.locator('.trial-layout p.mobile-only') },
+        { name: 'Worksheets mobile heading', locator: page.locator('#worksheets-title .mobile-only') },
+        { name: 'Worksheets mobile description', locator: page.locator('.worksheet-copy p.mobile-only') },
+        { name: 'Collection mobile intro', locator: page.locator('.collection .section-intro p.mobile-only') },
+        { name: 'Included mobile title', locator: page.locator('#included-title .mobile-only') },
+        { name: 'Included mobile intro', locator: page.locator('.included-copy p.mobile-only') },
+        { name: 'FAQ mobile intro', locator: page.locator('.faq .section-intro p.mobile-only') },
+        { name: 'Closing mobile heading', locator: page.locator('#closing-title .mobile-only') },
+        { name: 'Closing mobile pricing button label', locator: page.locator('.closing-actions [data-open="pricing"] .mobile-only') },
+        { name: 'Proof stat "the UK"', locator: page.locator('.proof-stat .mobile-only') }
+      ];
+
+      for (const item of mobileElements) {
+        assert.ok(await item.locator.isVisible(), `${item.name} must be visible at ${width}px`);
+        const box = await item.locator.boundingBox();
+        assert.ok(box && box.width > 0 && box.height > 0, `${item.name} must have substantive nonzero bounds at ${width}px`);
+      }
+
+      // Desktop-only content must NOT be visible on mobile
+      const desktopElements = [
+        page.locator('.hero-desc.desktop-only'),
+        page.locator('.sequence .section-intro p.desktop-only'),
+        page.locator('.research-copy.desktop-only'),
+        page.locator('#try-heading .desktop-only'),
+        page.locator('.trial-layout p.desktop-only'),
+        page.locator('#worksheets-title .desktop-only'),
+        page.locator('.worksheet-copy p.desktop-only'),
+        page.locator('.collection .section-intro p.desktop-only'),
+        page.locator('#included-title .desktop-only'),
+        page.locator('.included-copy p.desktop-only'),
+        page.locator('.faq .section-intro p.desktop-only'),
+        page.locator('#closing-title .desktop-only'),
+        page.locator('.closing-actions [data-open="pricing"] .desktop-only')
+      ];
+
+      for (const loc of desktopElements) {
+        const visible = await loc.isVisible();
+        assert.ok(!visible, `Desktop element should be hidden at ${width}px mobile view`);
+      }
+
+      // Hotspots on mobile
+      const markers = page.locator('.research-marker');
+      assert.equal(await markers.count(), 5, `Expected 5 research markers at ${width}px`);
+      const imgBox = await page.locator('.research-art-wrapper img').boundingBox();
+      assert.ok(imgBox && imgBox.width > 0, `Research image must have nonzero bounds at ${width}px`);
+
+      const targetCoords = [
+        { x: 0.406, y: 0.200 },
+        { x: 0.222, y: 0.472 },
+        { x: 0.748, y: 0.489 },
+        { x: 0.417, y: 0.598 },
+        { x: 0.695, y: 0.719 }
+      ];
+
+      for (let i = 0; i < 5; i++) {
+        const marker = markers.nth(i);
+        assert.ok(await marker.isVisible(), `Marker ${i + 1} must be visible`);
+        const mBox = await marker.boundingBox();
+        assert.ok(mBox, `Marker ${i + 1} bounding box must exist`);
+        const bg = await marker.evaluate((el) => window.getComputedStyle(el).backgroundColor);
+        assert.equal(bg, 'rgb(255, 255, 255)', `Marker ${i + 1} must have white background`);
+        assert.ok(mBox.width >= 24 && mBox.width <= 36, `Marker ${i + 1} width ~29px, got ${mBox.width}`);
+
+        const markerCenterX = (mBox.x + mBox.width / 2 - imgBox.x) / imgBox.width;
+        const markerCenterY = (mBox.y + mBox.height / 2 - imgBox.y) / imgBox.height;
+        assert.ok(Math.abs(markerCenterX - targetCoords[i].x) < 0.05, `Marker ${i + 1} x position error: ${markerCenterX} vs target ${targetCoords[i].x}`);
+        assert.ok(Math.abs(markerCenterY - targetCoords[i].y) < 0.05, `Marker ${i + 1} y position error: ${markerCenterY} vs target ${targetCoords[i].y}`);
+      }
+
+      // FAQ controls on mobile
+      const faqIcon = page.locator('.faq-list summary span.faq-icon').first();
+      const faqIconBox = await faqIcon.boundingBox();
+      assert.ok(faqIconBox && Math.abs(faqIconBox.width - 32) <= 2, `FAQ icon width should be ~32px, got ${faqIconBox?.width}`);
+      assert.ok(faqIconBox && Math.abs(faqIconBox.height - 32) <= 2, `FAQ icon height should be ~32px, got ${faqIconBox?.height}`);
+      const summaryBox = await page.locator('.faq-list summary').first().boundingBox();
+      assert.ok(summaryBox && summaryBox.height >= 56, `FAQ summary row height should be >= 56px, got ${summaryBox?.height}`);
+
+      // Pricing icons hidden on mobile
+      const pricingImgs = page.locator('.licensing-options img');
+      const pricingImgsVisible = await pricingImgs.first().isVisible();
+      assert.ok(!pricingImgsVisible, `Pricing option icons must be hidden on mobile`);
+
+      // Feature icons ~42px
+      const featureImg = page.locator('.feature > img').first();
+      const featBox = await featureImg.boundingBox();
+      assert.ok(featBox && Math.abs(featBox.width - 42) <= 4, `Feature icon width should be ~42px, got ${featBox?.width}`);
+
+      // Testimonial card size on 390px
+      if (width === 390) {
+        const testCard = page.locator('.testimonial-grid blockquote').first();
+        const testBox = await testCard.boundingBox();
+        assert.ok(testBox && Math.abs(testBox.width - 294) <= 4, `Testimonial card width should be ~294px, got ${testBox?.width}`);
+        assert.ok(testBox && testBox.height >= 330, `Testimonial card height should be >= 330px, got ${testBox?.height}`);
+        assert.ok(await page.locator('.swipe-hint').isVisible(), `Swipe hint should be visible on 390px`);
+      }
+    } else {
+      // Desktop content assertions
+      const desktopElements = [
+        { name: 'Hero desktop description', locator: page.locator('.hero-desc.desktop-only') },
+        { name: 'Sequence desktop intro', locator: page.locator('.sequence .section-intro p.desktop-only') },
+        { name: 'Research desktop copy', locator: page.locator('.research-copy.desktop-only') },
+        { name: 'Trial desktop heading', locator: page.locator('#try-heading .desktop-only') },
+        { name: 'Trial desktop description', locator: page.locator('.trial-layout p.desktop-only') },
+        { name: 'Worksheets desktop heading', locator: page.locator('#worksheets-title .desktop-only') },
+        { name: 'Worksheets desktop description', locator: page.locator('.worksheet-copy p.desktop-only') },
+        { name: 'Collection desktop intro', locator: page.locator('.collection .section-intro p.desktop-only') },
+        { name: 'Included desktop title', locator: page.locator('#included-title .desktop-only') },
+        { name: 'Included desktop intro', locator: page.locator('.included-copy p.desktop-only') },
+        { name: 'FAQ desktop intro', locator: page.locator('.faq .section-intro p.desktop-only') },
+        { name: 'Closing desktop heading', locator: page.locator('#closing-title .desktop-only') },
+        { name: 'Closing desktop pricing button label', locator: page.locator('.closing-actions [data-open="pricing"] .desktop-only') }
+      ];
+
+      for (const item of desktopElements) {
+        assert.ok(await item.locator.isVisible(), `${item.name} must be visible at ${width}px`);
+        const box = await item.locator.boundingBox();
+        assert.ok(box && box.width > 0 && box.height > 0, `${item.name} must have substantive nonzero bounds at ${width}px`);
+      }
+
+      // Mobile elements must NOT be visible on desktop
+      const mobileElements = [
+        page.locator('.hero-desc.mobile-only'),
+        page.locator('.sequence .section-intro p.mobile-only'),
+        page.locator('.research-mobile-header'),
+        page.locator('#try-heading .mobile-only'),
+        page.locator('.trial-layout p.mobile-only'),
+        page.locator('#worksheets-title .mobile-only'),
+        page.locator('.worksheet-copy p.mobile-only'),
+        page.locator('.collection .section-intro p.mobile-only'),
+        page.locator('#included-title .mobile-only'),
+        page.locator('.included-copy p.mobile-only'),
+        page.locator('.faq .section-intro p.mobile-only'),
+        page.locator('#closing-title .mobile-only'),
+        page.locator('.closing-actions [data-open="pricing"] .mobile-only')
+      ];
+
+      for (const loc of mobileElements) {
+        const visible = await loc.isVisible();
+        assert.ok(!visible, `Mobile element should be hidden at ${width}px desktop view`);
+      }
+
+      // On 1440px desktop: leader lines
+      if (width === 1440) {
+        const leaderLines = page.locator('.research-leaders path.leader-line');
+        assert.equal(await leaderLines.count(), 5, `Expected 5 desktop leader lines at 1440px`);
+        const pricingImgs = page.locator('.licensing-options img');
+        assert.ok(await pricingImgs.first().isVisible(), `Pricing option icons must be visible on 1440px`);
+      }
+    }
+
+    // Annotation card numbers use POV marker on all viewports
+    const annotNum = page.locator('.annotation-num').first();
+    const annotNumBg = await annotNum.evaluate((el) => window.getComputedStyle(el).backgroundImage);
+    assert.ok(annotNumBg.includes('pov-marker'), `Annotation number must use pov-marker asset`);
 
     if (expectLeadCapture) {
       assert.equal(await page.locator('body').getAttribute('data-lead-capture'), 'enabled');
