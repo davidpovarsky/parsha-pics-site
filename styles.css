@@ -336,29 +336,44 @@ span.desktop-only { display: inline; }
 .faq-list summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 19px 4px; cursor: pointer; font-size: 1.05rem; font-weight: 600; }
 .faq-list summary::-webkit-details-marker { display: none; }
 .faq-list summary span.faq-icon {
+  position: relative;
   width: 36px;
   height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-grid;
+  place-items: center;
   flex: none;
+  border-radius: 50%;
+  background: #9C3732;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.faq-list summary:hover span.faq-icon {
+  transform: scale(1.06);
+}
+.faq-list summary:active span.faq-icon {
+  transform: scale(0.94);
 }
 .faq-list summary .faq-icon img {
+  position: absolute;
+  inset: 0;
   width: 36px;
   height: 36px;
-  flex: none;
+  display: block;
+  pointer-events: none;
 }
 .faq-list summary .faq-icon img.faq-icon-minus {
-  display: none;
+  opacity: 1;
+  z-index: 1;
 }
 .faq-list summary .faq-icon img.faq-icon-plus {
-  display: block;
-}
-.faq-list details[open] summary .faq-icon img.faq-icon-minus {
-  display: block;
+  z-index: 2;
+  clip-path: inset(0% 0% 0% 0%);
+  opacity: 1;
+  transition: clip-path 0.28s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.22s ease;
 }
 .faq-list details[open] summary .faq-icon img.faq-icon-plus {
-  display: none;
+  clip-path: inset(48% 0% 48% 0%);
+  opacity: 0;
 }
 .faq-list details p { max-width: 800px; padding: 0 46px 22px 4px; color: var(--muted); font-size: .96rem; }
 .closing { display: grid; grid-template-columns: 36% 64%; background: #efe4d2; min-height: 350px; }

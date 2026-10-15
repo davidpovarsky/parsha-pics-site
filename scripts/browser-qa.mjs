@@ -292,17 +292,16 @@ try {
   const summaries = page.locator('.faq-list summary');
   const firstDetails = page.locator('.faq-list details').nth(0);
   assert.equal(await firstDetails.evaluate((d) => d.open), false);
-  const plusVisibleBefore = await firstDetails.locator('.faq-icon-plus').evaluate((el) => window.getComputedStyle(el).display);
-  const minusVisibleBefore = await firstDetails.locator('.faq-icon-minus').evaluate((el) => window.getComputedStyle(el).display);
-  assert.notEqual(plusVisibleBefore, 'none', 'Plus must be visible when closed');
-  assert.equal(minusVisibleBefore, 'none', 'Minus must NOT be visible when closed');
+  const plusOpacityBefore = await firstDetails.locator('.faq-icon-plus').evaluate((el) => window.getComputedStyle(el).opacity);
+  assert.equal(plusOpacityBefore, '1', 'Plus must be fully opaque when closed');
 
   await summaries.nth(0).click();
   assert.equal(await firstDetails.evaluate((d) => d.open), true);
-  const plusVisibleAfter = await firstDetails.locator('.faq-icon-plus').evaluate((el) => window.getComputedStyle(el).display);
-  const minusVisibleAfter = await firstDetails.locator('.faq-icon-minus').evaluate((el) => window.getComputedStyle(el).display);
-  assert.equal(plusVisibleAfter, 'none', 'Plus must NOT be visible when open');
-  assert.notEqual(minusVisibleAfter, 'none', 'Minus must be visible when open');
+  await page.waitForTimeout(350); // allow morph transition
+  const plusOpacityAfter = await firstDetails.locator('.faq-icon-plus').evaluate((el) => window.getComputedStyle(el).opacity);
+  const minusOpacityAfter = await firstDetails.locator('.faq-icon-minus').evaluate((el) => window.getComputedStyle(el).opacity);
+  assert.equal(plusOpacityAfter, '0', 'Plus must be fully retracted and transparent when open');
+  assert.equal(minusOpacityAfter, '1', 'Minus must be visible when open');
   const spanTransform = await firstDetails.locator('.faq-icon').evaluate((el) => window.getComputedStyle(el).transform);
   assert.ok(!spanTransform.includes('matrix(0.707'), 'FAQ icon must NOT rotate into an X');
 
