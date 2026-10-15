@@ -43,6 +43,12 @@
     {"file":"option-3.png","nodeId":"61:62"},
     {"file":"final-art.png","nodeId":"5:116"},
     {"file":"transition-to-red.svg","nodeId":"77:68"},
-    {"file":"transition-from-red.svg","nodeId":"76:110"}
+    {"file":"transition-from-red.svg","nodeId":"76:110"},
+    {"file":"worksheet-3-secondary.png","nodeId":"33:90"},
+    {"file":"worksheet-4-secondary.png","nodeId":"33:91"},
+    {"file":"worksheet-5-secondary.png","nodeId":"33:93"},
+    {"file":"worksheet-6-secondary.png","nodeId":"33:94"},
+    {"file":"faq-control-plus.svg","nodeId":"72:149"},
+    {"file":"faq-control-minus.svg","nodeId":"72:158"}
   ]
 }

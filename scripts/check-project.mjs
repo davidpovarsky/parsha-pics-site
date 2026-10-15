@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 const html = await readFile('index.html', 'utf8');
 const css = await readFile('styles.css', 'utf8');
 const manifest = JSON.parse(await readFile('figma-assets.json', 'utf8'));
-if (manifest.assets.length !== 41) throw new Error(`Expected 41 Figma assets, found ${manifest.assets.length}`);
+if (manifest.assets.length !== 47) throw new Error(`Expected 47 Figma assets, found ${manifest.assets.length}`);
 const links = [
   ...[...html.matchAll(/(?:src|href)=["']\.\/assets\/([^"']+)["']/g)].map((x) => x[1]),
   ...[...css.matchAll(/url\(["']?\.\/assets\/([^"'\)]+)["']?\)/g)].map((x) => x[1])

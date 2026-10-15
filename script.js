@@ -171,7 +171,7 @@
             console.warn('Programmatic download trigger:', autoErr);
           }
         } else if (type === 'trial') {
-          status.textContent = 'Thank you! Your request has been sent. The Parsha Pics team will follow up by email.';
+          status.textContent = 'Your request was sent, but the sample download is temporarily unavailable. Please try again later.';
         } else {
           status.textContent = 'Thank you! Your message has been sent.';
         }
@@ -200,6 +200,7 @@
     // Gather galleries
     const galleries = {
       sequence: [],
+      worksheets: [],
       vayeishev: [],
       mishpatim: [],
       kedoshim: []
@@ -218,6 +219,27 @@
         });
       }
     });
+
+    // Worksheets items helper (8 worksheets)
+    const buildWorksheetsGallery = () => {
+      const triggers = document.querySelectorAll('[data-lightbox="worksheets"]');
+      triggers.forEach((trigger, idx) => {
+        const img = trigger.querySelector('img');
+        if (img) {
+          const isMain = trigger.classList.contains('worksheet-main-trigger');
+          const group = trigger.closest('.worksheet-group');
+          const year = group?.querySelector('figcaption')?.textContent?.trim() || `Year ${Math.floor(idx / 2) + 3}`;
+          const typeLabel = isMain ? 'Main worksheet' : 'Additional worksheet';
+          galleries.worksheets.push({
+            src: img.getAttribute('src'),
+            alt: img.getAttribute('alt') || `${year} ${typeLabel}`,
+            title: `${year} &ndash; ${typeLabel}`,
+            counter: `${idx + 1} / 8`
+          });
+        }
+      });
+    };
+    buildWorksheetsGallery();
 
     // Collection items helper
     const buildCollectionGallery = (key, name) => {

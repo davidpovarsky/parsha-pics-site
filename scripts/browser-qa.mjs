@@ -70,6 +70,32 @@ try {
     const threeHundredColor = await threeHundredAccent.evaluate((el) => window.getComputedStyle(el).color);
     assert.equal(sevenColor, threeHundredColor, 'Accent colors for 7 and 300+ must match exactly');
 
+    // Verify 8 distinct worksheet images are present and fully visible
+    const worksheetImgs = page.locator('.worksheet-trigger img');
+    assert.equal(await worksheetImgs.count(), 8, `Expected 8 worksheet images at ${width}px, found ${await worksheetImgs.count()}`);
+    for (let w = 0; w < 8; w++) {
+      const wImg = worksheetImgs.nth(w);
+      assert.ok(await wImg.isVisible(), `Worksheet image ${w + 1} must be visible at ${width}px`);
+      const wBox = await wImg.boundingBox();
+      assert.ok(wBox && wBox.width > 0 && wBox.height > 0, `Worksheet image ${w + 1} must have non-zero bounds at ${width}px`);
+    }
+
+    // Verify sequence number badges do NOT have outer rectangular plaque ::before
+    const seqBadgeBeforeContent = await page.locator('.number-badge').first().evaluate((el) => {
+      const pseudo = window.getComputedStyle(el, '::before');
+      return pseudo.content;
+    });
+    assert.ok(seqBadgeBeforeContent === 'none' || seqBadgeBeforeContent === 'normal', `Sequence number badge must not have outer plaque at ${width}px, got ${seqBadgeBeforeContent}`);
+
+    // Verify Research point 5 copy
+    const card5Text = await page.locator('.annotation-desc').nth(4).textContent();
+    assert.ok(card5Text.includes('fallen horse'), `Research card 5 must say "fallen horse", got: ${card5Text}`);
+    assert.ok(!card5Text.includes('soldier'), `Research card 5 must not say "soldier"`);
+
+    // Verify trial band has no follow-up sentence
+    const trialBandText = await page.locator('.trial-band').textContent();
+    assert.ok(!trialBandText.includes('follow up'), `Trial band must not contain follow up text`);
+
     if (width <= 760) {
       // Mobile-only content assertions
       const mobileElements = [
@@ -337,6 +363,38 @@ try {
     await page.locator('[data-lightbox-close]').click();
     assert.equal(await lightbox.evaluate((d) => d.open), false);
   }
+
+  // Lightbox: Gallery 3 (Worksheets 8 items)
+  const worksheetTriggers = page.locator('[data-lightbox="worksheets"]');
+  assert.equal(await worksheetTriggers.count(), 8, 'All 8 worksheets must have triggers');
+
+  for (let idx = 0; idx < 8; idx++) {
+    const triggerEl = worksheetTriggers.nth(idx);
+    await triggerEl.click();
+    assert.equal(await lightbox.evaluate((d) => d.open), true, `Lightbox must open for worksheet ${idx + 1}`);
+    assert.equal(await page.locator('#lightboxCounter').textContent(), `${idx + 1} / 8`);
+    await page.waitForFunction(() => {
+      const img = document.getElementById('lightboxImg');
+      return img && img.complete && img.naturalWidth > 0;
+    }, null, { timeout: 5000 });
+    const naturalWidth = await page.locator('#lightboxImg').evaluate((img) => img.naturalWidth);
+    assert.ok(naturalWidth > 0, `Worksheet ${idx + 1} must load in lightbox`);
+    await page.locator('[data-lightbox-close]').click();
+    assert.equal(await lightbox.evaluate((d) => d.open), false, `Lightbox must close after worksheet ${idx + 1}`);
+    assert.equal(await triggerEl.evaluate((el) => document.activeElement === el), true, `Focus must restore to worksheet ${idx + 1} trigger`);
+  }
+
+  // Worksheets Gallery Next/Prev cycling
+  await worksheetTriggers.nth(0).click();
+  assert.equal(await page.locator('#lightboxCounter').textContent(), '1 / 8');
+  await page.locator('[data-lightbox-next]').click();
+  assert.equal(await page.locator('#lightboxCounter').textContent(), '2 / 8');
+  await page.keyboard.press('ArrowRight');
+  assert.equal(await page.locator('#lightboxCounter').textContent(), '3 / 8');
+  await page.keyboard.press('ArrowLeft');
+  assert.equal(await page.locator('#lightboxCounter').textContent(), '2 / 8');
+  await page.keyboard.press('Escape');
+  assert.equal(await lightbox.evaluate((d) => d.open), false);
 
   // Mobile check: Collection thumbnails hidden in DOM layout, but extra pictures accessible via lightbox
   const thumbsVisible = await page.locator('.collection-thumbs').first().evaluate((el) => window.getComputedStyle(el).display);
